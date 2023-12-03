@@ -1,3 +1,4 @@
+/*
 // SPDX-License-Identifier: UNLICENSED
 import "../contracts/BetWaveOrganizer.sol";
 import "../contracts/BetWaveDAO.sol";
@@ -6,15 +7,15 @@ pragma solidity ^0.8.19;
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
-    error insufficientBalance();
+    /*error insufficientBalance();
     error minimumBetAmount();
     error alreadyBet();
     error eventAlreadyStarted();
     error eventNotEnded();
     error feesNotPaid();
-    error forbidden();
+    error forbidden();*/
 
-contract SimpleBet {
+/*contract SimpleBet {
     string calledFallbackFun;
 
     //name of the bet
@@ -110,7 +111,8 @@ contract SimpleBet {
         _;
     }
 
-    /*modifier hasEventStarted() {
+    */
+/*modifier hasEventStarted() {
         if (block.timestamp >= beginEventTimestamp)
             revert eventAlreadyStarted();
         _;
@@ -119,7 +121,8 @@ contract SimpleBet {
     modifier hasEventEnded() {
         if (block.timestamp >= endEventTimestamp) revert eventNotEnded();
         _;
-    }*/
+    }*//*
+
 
     function setbet(uint256 _betId)
     external
@@ -232,3 +235,4 @@ contract SimpleBet {
         calledFallbackFun = "Fallback function is executed!";
     }
 }
+*/

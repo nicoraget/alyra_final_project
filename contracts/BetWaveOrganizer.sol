@@ -1,4 +1,4 @@
-import "../contracts/SimpleBet.sol";
+/*import "../contracts/SimpleBet.sol";
 import "../contracts/BetWaveDAO.sol";
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
@@ -30,7 +30,7 @@ contract BetWaveOrganizer {
         ValidatorNumberRequired
     }*/
 
-    enum BetStatus {
+   /* enum BetStatus {
         betTime,
         VoteTime,
         CountTime,
@@ -48,7 +48,7 @@ contract BetWaveOrganizer {
         uint256 comp1VoteCount;
         uint256 comp2VoteCount;
         BetStatus betStatus;
-    }
+    }*/
 
     /*struct User {
         address payable userAddress;
@@ -64,7 +64,7 @@ contract BetWaveOrganizer {
         mapping(address => uint256) hasVoted;
     }*/
 
-    address payable platformAddress =
+   /* address payable platformAddress =
     payable(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4);
 
     mapping(address => Bet) public betList;
@@ -77,7 +77,7 @@ contract BetWaveOrganizer {
     uint256 validatorNumber;
     uint256 daoVoteNumber;*/
 
-    address betWaveDAOAddress;
+   /* address betWaveDAOAddress;
 
     event newBet(address, string, string);
     event startValidation(address);
@@ -103,7 +103,7 @@ contract BetWaveOrganizer {
         _;
     }*/
 
-    constructor(address _betWaveDAOAddress) payable {
+    /*constructor(address _betWaveDAOAddress) payable {
     betWaveDAO = BetWaveDAO(payable(_betWaveDAOAddress));
     }
 
@@ -138,7 +138,7 @@ contract BetWaveOrganizer {
         validatorNumber--;
     }*/
 
-    function DeployNewBet(string memory _compName1, string memory _compName2)
+   /* function DeployNewBet(string memory _compName1, string memory _compName2)
     external
     doesUserExist
     {
@@ -280,7 +280,7 @@ contract BetWaveOrganizer {
         DAOVoteList[daoVoteNumber++].newValue = _amount;
     }*/
 
-    receive() external payable {
+    /*receive() external payable {
         require(msg.value >= 5 * 1e4 wei, "you can't send less than 50k wei");
     }
 
@@ -288,3 +288,4 @@ contract BetWaveOrganizer {
         calledFallbackFun = "Fallback function is executed!";
     }
 }
+*/
