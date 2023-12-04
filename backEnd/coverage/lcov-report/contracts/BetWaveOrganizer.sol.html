@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/BetWaveOrganizer.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> BetWaveOrganizer.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">51.43% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>18/35</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">60.87% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>28/46</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">64.29% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">63.64% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>35/55</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">41×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">38×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-yes">25×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-yes">21×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import "../contracts/SimpleBet.sol";
+import "../contracts/BetWaveDAO.sol";
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+&nbsp;
+// Uncomment this line to use console.log
+// import "hardhat/console.sol";
+&nbsp;
+    error noWinner();
+    error notOwner();
+    error wrongStep();
+&nbsp;
+contract BetWaveOrganizer {
+    string calledFallbackFun = "albatros";
+&nbsp;
+    enum BetStatus {
+        betTime,
+        VoteTime,
+        CountTime,
+        VoteEnded
+    }
+&nbsp;
+    struct Bet {
+        uint256 validationNumber;
+        string compName1;
+        string compName2;
+        address owner;
+        mapping(address =&gt; uint256) validatorsResult;
+        address[] validatorList;
+        uint256 voteCount;
+        uint256 comp1VoteCount;
+        uint256 comp2VoteCount;
+        BetStatus betStatus;
+    }
+&nbsp;
+    mapping(address =&gt; Bet) public betList;
+&nbsp;
+    //address public betWaveDAOAddress;
+&nbsp;
+    event newBet(address, string, string);
+    event startValidation(address);
+    //event newUser(address, uint256);
+    event startCount(address);
+    //event voteRejected(uint256);
+&nbsp;
+    BetWaveDAO betWaveDAO;
+&nbsp;
+    modifier doesUserExist() {
+        if (betWaveDAO.userToId(msg.sender) == 0)
+            revert notRegistered();
+        _;
+    }
+&nbsp;
+    modifier onlyOwner(address _betAddress) {
+        if (betList[_betAddress].owner != msg.sender) revert notOwner();
+        _;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    modifier onlyValidator() {</span>
+<span class="cstat-no" title="statement not covered" >        (address _userAddress , ,) = betWaveDAO.validators(msg.sender);</span>
+<span class="cstat-no" title="statement not covered" >        if (_userAddress != msg.sender)</span>
+            revert notValidator();
+        _;
+    }
+&nbsp;
+    modifier isCorrectStep(BetStatus _betStatus,address _betAddress) {
+        if (betList[_betAddress].betStatus != _betStatus)
+            revert wrongStep();
+            _;
+    }
+&nbsp;
+    constructor(address _betWaveDAOAddress) payable {
+        betWaveDAO = BetWaveDAO(payable(_betWaveDAOAddress));
+    }
+&nbsp;
+    // GETTERS //
+    function getBetValidatorsResult(address _betAddress) external view returns(uint) {
+        return  betList[_betAddress].validatorsResult[msg.sender];
+    }
+&nbsp;
+    function getvalidatorAddress(address _betAddress,uint _id) external view returns(address) {
+        return betList[_betAddress].validatorList[_id];
+    }
+&nbsp;
+    // GETTERS //
+&nbsp;
+    function deployNewBet(string memory _compName1, string memory _compName2)
+    external
+    doesUserExist
+    {
+        require(
+            betWaveDAO.validatorNumber() &gt;= betWaveDAO.validatorNumberRequired(),
+            "not enough validator"
+        );
+        address contractAddress = address(
+            new SimpleBet(
+                _compName1,
+                _compName2,
+                address(this),
+                address(betWaveDAO)));
+        betList[contractAddress].compName1 = _compName1;
+        betList[contractAddress].compName2 = _compName2;
+        betList[contractAddress].owner = msg.sender;
+        betList[contractAddress].betStatus = BetStatus.betTime;
+        emit newBet(contractAddress, _compName1, _compName2);
+    }
+&nbsp;
+    function startBetValidation(address _betAddress)
+    external
+    onlyOwner(_betAddress)
+    isCorrectStep(BetStatus.betTime,_betAddress)
+    {
+        betList[_betAddress].betStatus = BetStatus.VoteTime;
+        emit startValidation(_betAddress);
+    }
+&nbsp;
+    function setBetVote(uint256 _compId, address _betAddress) public
+    isCorrectStep( BetStatus.VoteTime,_betAddress){
+        require(_compId &lt; 2, "unexisting competitors");
+        (address userAddress, ,) = betWaveDAO.validators(msg.sender);
+        if(userAddress != msg.sender) revert notValidator();
+&nbsp;
+        if (_compId == 0) {
+            betList[_betAddress].comp1VoteCount++;
+            betList[_betAddress].voteCount++;
+            betList[_betAddress].validatorsResult[msg.sender] = 0;
+            betList[_betAddress].validatorList.push(msg.sender);
+        } else <span class="missing-if-branch" title="else path not taken" >E</span>if (_compId == 1) {
+            betList[_betAddress].comp2VoteCount++;
+            betList[_betAddress].voteCount++;
+            betList[_betAddress].validatorsResult[msg.sender] = 1;
+            betList[_betAddress].validatorList.push(msg.sender);
+        }
+        if (betList[_betAddress].voteCount &gt;= betWaveDAO.validatorNumberRequired()) {
+            betList[_betAddress].betStatus = BetStatus.CountTime;
+            emit startCount(_betAddress);
+        }
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function tallyVote(address _betAddress) external onlyOwner(_betAddress)</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>isCorrectStep(BetStatus.CountTime,_betAddress){
+<span class="cstat-no" title="statement not covered" >        uint256 winnerId;</span>
+<span class="cstat-no" title="statement not covered" >        if (</span>
+            betList[_betAddress].comp1VoteCount &gt;
+            betList[_betAddress].comp2VoteCount
+        ) {
+            //check if quorum is reached
+<span class="cstat-no" title="statement not covered" >            if (</span>
+                (betList[_betAddress].comp1VoteCount * 100) /
+                betList[_betAddress].voteCount &gt;=
+                betWaveDAO.betQuorum()
+            ) {
+<span class="cstat-no" title="statement not covered" >                feesOrchestrator(_betAddress, 0)</span>;
+            }
+        } else <span class="cstat-no" title="statement not covered" >if (</span>
+            betList[_betAddress].comp1VoteCount &lt;
+            betList[_betAddress].comp2VoteCount
+        ) {
+            //check if quorum is reached
+<span class="cstat-no" title="statement not covered" >            if (</span>
+                (betList[_betAddress].comp2VoteCount * 100) /
+                betList[_betAddress].voteCount &gt;=
+                betWaveDAO.betQuorum()
+            ) {
+<span class="cstat-no" title="statement not covered" >                feesOrchestrator(_betAddress, 1)</span>;
+            }
+        } else revert noWinner();
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function feesOrchestrator(</span>
+        address _betAddress,
+        uint256 _expectedValidatorResultId
+    ) internal {
+<span class="cstat-no" title="statement not covered" >        SimpleBet(payable(_betAddress)).sendPlatfromAndCreatorFees(</span>
+            betWaveDAO.platformFees(),
+            betWaveDAO.creatorFees()
+        );
+<span class="cstat-no" title="statement not covered" >        uint256 rewardValidator = SimpleBet(payable(_betAddress))</span>
+        .calculateValidatorReward(betWaveDAO.validatorFees());
+<span class="cstat-no" title="statement not covered" >        for (</span>
+            uint256 i = 0;
+            i &lt; betList[_betAddress].validatorList.length;
+            i++
+        ) {
+<span class="cstat-no" title="statement not covered" >            if (</span>
+                betList[_betAddress].validatorsResult[
+                betList[_betAddress].validatorList[i]
+                ] == _expectedValidatorResultId
+            ) {
+<span class="cstat-no" title="statement not covered" >                SimpleBet(payable(_betAddress)).sendValidatorFees(</span>
+                    betList[_betAddress].validatorList[i],
+                    rewardValidator
+                );
+            } else {
+&nbsp;
+                // betWaveDAO.validators[betList[_betAddress].validatorList[i]].strike++;
+            }
+        }
+<span class="cstat-no" title="statement not covered" >        SimpleBet(payable(_betAddress)).setFeesBooleanToTrue()</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function sendEther(address _to, uint256 _amount) internal {</span>
+<span class="cstat-no" title="statement not covered" >        (bool sent, bytes memory received) = payable(_to).call{value : _amount}(</span>
+            ""
+        );
+<span class="cstat-no" title="statement not covered" >        require(sent, "Failed to send Ether")</span>;
+    }
+&nbsp;
+    receive() external payable {
+        require(msg.value &gt;= 5 * 1e4 wei, "you can't send less than 50k wei");
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    fallback() external payable {</span>
+        calledFallbackFun = "Fallback function is executed!";
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Dec 03 2023 23:16:19 GMT+0100 (Central European Standard Time)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

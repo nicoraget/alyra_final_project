@@ -8,7 +8,7 @@ pragma solidity ^0.8.21;
 
 contract BetWaveDAO {
 
-    string calledFallbackFun = "ta race";
+    string calledFallbackFun = "efblvqhsbdlg";
 
     uint256 public validatorNumberRequired = 4;
     uint256 public platformFees = 150;
@@ -17,6 +17,8 @@ contract BetWaveDAO {
     uint256 public DAOQuorum = 75;
     uint256 public validatorFees = 10;
     uint256 public userNumber = 1;
+    uint256 public validatorNumber;
+    uint256  public daoVoteNumber;
 
     enum VoteType {
         PlatformFee,
@@ -46,8 +48,6 @@ contract BetWaveDAO {
     mapping(uint256 => address) public userList;
     mapping(address => uint256) public userToId;
 
-    uint256 public validatorNumber;
-    uint256  public daoVoteNumber;
 
     event voteRejected(uint256);
     event newUser(address, uint256);
@@ -66,14 +66,15 @@ contract BetWaveDAO {
 
     modifier hasBalance(address _address) {
         if (_address.balance <= 1 ether)
-    revert insufficientBalance();
-    _;
+            revert insufficientBalance();
+        _;
     }
 
     // GETTERS //
     function getDaoVoteHasVoted(uint _id) external view returns (bool){
         return DAOVoteList[_id].hasVoted[msg.sender];
     }
+
     // GETTERS //
 
     function addUser() external {
