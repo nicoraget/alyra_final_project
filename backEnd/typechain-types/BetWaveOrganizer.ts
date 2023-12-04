@@ -30,9 +30,13 @@ export interface BetWaveOrganizerInterface extends Interface {
       | "deployNewBet"
       | "getBetValidatorsResult"
       | "getvalidatorAddress"
+      | "lastSimpleBetAddress"
       | "setBetVote"
       | "startBetValidation"
       | "tallyVote"
+      | "test1"
+      | "test2"
+      | "test3"
   ): FunctionFragment;
 
   getEvent(
@@ -56,6 +60,10 @@ export interface BetWaveOrganizerInterface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "lastSimpleBetAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "setBetVote",
     values: [BigNumberish, AddressLike]
   ): string;
@@ -67,6 +75,9 @@ export interface BetWaveOrganizerInterface extends Interface {
     functionFragment: "tallyVote",
     values: [AddressLike]
   ): string;
+  encodeFunctionData(functionFragment: "test1", values?: undefined): string;
+  encodeFunctionData(functionFragment: "test2", values?: undefined): string;
+  encodeFunctionData(functionFragment: "test3", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "betList", data: BytesLike): Result;
   decodeFunctionResult(
@@ -81,12 +92,19 @@ export interface BetWaveOrganizerInterface extends Interface {
     functionFragment: "getvalidatorAddress",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "lastSimpleBetAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "setBetVote", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "startBetValidation",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "tallyVote", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "test1", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "test2", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "test3", data: BytesLike): Result;
 }
 
 export namespace newBetEvent {
@@ -205,6 +223,8 @@ export interface BetWaveOrganizer extends BaseContract {
     "view"
   >;
 
+  lastSimpleBetAddress: TypedContractMethod<[], [string], "view">;
+
   setBetVote: TypedContractMethod<
     [_compId: BigNumberish, _betAddress: AddressLike],
     [void],
@@ -222,6 +242,12 @@ export interface BetWaveOrganizer extends BaseContract {
     [void],
     "nonpayable"
   >;
+
+  test1: TypedContractMethod<[], [bigint], "view">;
+
+  test2: TypedContractMethod<[], [bigint], "view">;
+
+  test3: TypedContractMethod<[], [bigint], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -263,6 +289,9 @@ export interface BetWaveOrganizer extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "lastSimpleBetAddress"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
     nameOrSignature: "setBetVote"
   ): TypedContractMethod<
     [_compId: BigNumberish, _betAddress: AddressLike],
@@ -275,6 +304,15 @@ export interface BetWaveOrganizer extends BaseContract {
   getFunction(
     nameOrSignature: "tallyVote"
   ): TypedContractMethod<[_betAddress: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "test1"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "test2"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "test3"
+  ): TypedContractMethod<[], [bigint], "view">;
 
   getEvent(
     key: "newBet"

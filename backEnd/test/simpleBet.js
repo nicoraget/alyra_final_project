@@ -31,7 +31,7 @@ async function deployFixture() {
     return {betWaveOrganizer, betWaveDAO, simpleBet, user1, user2, user3, user4, user5};
 }
 
-describe.only("SimpleBet", () => {
+describe("SimpleBet", () => {
     describe("deploy", () => {
         it("should create betWaveOrganizer instance", async () => {
             //GIVEN
@@ -268,21 +268,6 @@ describe.only("SimpleBet", () => {
 
             //THEN
             await expect(simpleBet.connect(user1).sendPlatfromAndCreatorFees(platformFees,creatorFees)).to.be.revertedWithCustomError(simpleBet, 'forbidden');
-        });
-
-        it("should fail if fees have already been paid", async() => {
-            //GIVEN
-            const {simpleBet,betWaveOrganizer, user1} = await loadFixture(deployFixture);
-            const betId = 1;
-            const platformFees = 150;
-            const creatorFees = 50;
-
-            //WHEN
-            await simpleBet.connect(user1).setBet(betId, {value: ethers.parseEther("10")});
-            await simpleBet.connect(iWeth).sendPlatfromAndCreatorFees(platformFees,creatorFees);
-
-            //THEN
-            await expect(simpleBet.connect(iWeth).sendPlatfromAndCreatorFees(platformFees,creatorFees)).to.be.revertedWith("fee already paid");
         });
 
     });

@@ -45,6 +45,12 @@ contract BetWaveOrganizer {
 
     BetWaveDAO betWaveDAO;
 
+    address public lastSimpleBetAddress;
+
+    uint public test1;
+    uint public test2;
+    uint public test3;
+
     modifier doesUserExist() {
         if (betWaveDAO.userToId(msg.sender) == 0)
             revert notRegistered();
@@ -98,6 +104,7 @@ contract BetWaveOrganizer {
                 _compName2,
                 address(this),
                 address(betWaveDAO)));
+        lastSimpleBetAddress = contractAddress;
         betList[contractAddress].compName1 = _compName1;
         betList[contractAddress].compName2 = _compName2;
         betList[contractAddress].owner = msg.sender;
@@ -139,7 +146,6 @@ contract BetWaveOrganizer {
 
     function tallyVote(address _betAddress) external onlyOwner(_betAddress)
     isCorrectStep(BetStatus.CountTime, _betAddress) {
-        uint256 winnerId;
         if (
             betList[_betAddress].comp1VoteCount >
             betList[_betAddress].comp2VoteCount
@@ -151,6 +157,7 @@ contract BetWaveOrganizer {
                 betWaveDAO.betQuorum()
             ) {
                 feesOrchestrator(_betAddress, 0);
+                test3 = address(SimpleBet(payable(_betAddress))).balance;
             }
         } else if (
             betList[_betAddress].comp1VoteCount <
@@ -173,8 +180,11 @@ contract BetWaveOrganizer {
     ) internal {
         SimpleBet(payable(_betAddress)).sendPlatfromAndCreatorFees(
             betWaveDAO.platformFees(),
-            betWaveDAO.creatorFees());
+            betWaveDAO.creatorFees(),
+            betList[_betAddress].owner);
+        test2 = address(SimpleBet(payable(_betAddress))).balance;
         uint256 rewardValidator = SimpleBet(payable(_betAddress)).calculateValidatorReward(betWaveDAO.validatorFees());
+        test1 = rewardValidator;
         for (
             uint256 i = 0;
             i < betList[_betAddress].validatorList.length;

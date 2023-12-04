@@ -37,6 +37,7 @@ export interface SimpleBetInterface extends Interface {
       | "sendValidatorFees"
       | "setBet"
       | "setFeesBooleanToTrue"
+      | "test"
       | "totalBet"
   ): FunctionFragment;
 
@@ -78,7 +79,7 @@ export interface SimpleBetInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "sendPlatfromAndCreatorFees",
-    values: [BigNumberish, BigNumberish]
+    values: [BigNumberish, BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "sendValidatorFees",
@@ -92,6 +93,7 @@ export interface SimpleBetInterface extends Interface {
     functionFragment: "setFeesBooleanToTrue",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "test", values?: undefined): string;
   encodeFunctionData(functionFragment: "totalBet", values?: undefined): string;
 
   decodeFunctionResult(
@@ -140,6 +142,7 @@ export interface SimpleBetInterface extends Interface {
     functionFragment: "setFeesBooleanToTrue",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "test", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "totalBet", data: BytesLike): Result;
 }
 
@@ -208,7 +211,7 @@ export interface SimpleBet extends BaseContract {
   calculateValidatorReward: TypedContractMethod<
     [_validatorFees: BigNumberish],
     [bigint],
-    "view"
+    "nonpayable"
   >;
 
   competitors: TypedContractMethod<
@@ -231,7 +234,11 @@ export interface SimpleBet extends BaseContract {
   redeemToBettor: TypedContractMethod<[], [void], "payable">;
 
   sendPlatfromAndCreatorFees: TypedContractMethod<
-    [_plateformeFees: BigNumberish, _creatorFees: BigNumberish],
+    [
+      _plateformeFees: BigNumberish,
+      _creatorFees: BigNumberish,
+      _ownerAddress: AddressLike
+    ],
     [void],
     "nonpayable"
   >;
@@ -245,6 +252,8 @@ export interface SimpleBet extends BaseContract {
   setBet: TypedContractMethod<[_betId: BigNumberish], [void], "payable">;
 
   setFeesBooleanToTrue: TypedContractMethod<[], [void], "nonpayable">;
+
+  test: TypedContractMethod<[], [bigint], "view">;
 
   totalBet: TypedContractMethod<[], [bigint], "view">;
 
@@ -277,7 +286,11 @@ export interface SimpleBet extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "calculateValidatorReward"
-  ): TypedContractMethod<[_validatorFees: BigNumberish], [bigint], "view">;
+  ): TypedContractMethod<
+    [_validatorFees: BigNumberish],
+    [bigint],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "competitors"
   ): TypedContractMethod<
@@ -304,7 +317,11 @@ export interface SimpleBet extends BaseContract {
   getFunction(
     nameOrSignature: "sendPlatfromAndCreatorFees"
   ): TypedContractMethod<
-    [_plateformeFees: BigNumberish, _creatorFees: BigNumberish],
+    [
+      _plateformeFees: BigNumberish,
+      _creatorFees: BigNumberish,
+      _ownerAddress: AddressLike
+    ],
     [void],
     "nonpayable"
   >;
@@ -321,6 +338,9 @@ export interface SimpleBet extends BaseContract {
   getFunction(
     nameOrSignature: "setFeesBooleanToTrue"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "test"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "totalBet"
   ): TypedContractMethod<[], [bigint], "view">;

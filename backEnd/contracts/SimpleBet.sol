@@ -56,6 +56,8 @@ contract SimpleBet {
     address public betWaveDaoAddress;
     bool hasFeesBeenPaid;
 
+    uint public test;
+
     constructor(
         string memory _compName1,
         string memory _compName2,
@@ -150,20 +152,21 @@ contract SimpleBet {
 
     function sendPlatfromAndCreatorFees(
         uint256 _plateformeFees,
-        uint256 _creatorFees //hasEventEnded
+        uint256 _creatorFees,
+        address _ownerAddress//hasEventEnded
     ) public hasAmountContract isAuthorized {
         require(!hasFeesBeenPaid, "fee already paid");
         uint256 contractBalanceSnapshot = getContractBalance();
-        uint256 amountToSendToPlaterforme = contractBalanceSnapshot /
+        uint256 amountToSendToPlaterform = contractBalanceSnapshot /
         _plateformeFees;
         uint256 amountToSendToOwner = contractBalanceSnapshot / _creatorFees;
-        sendEther(betWaveDaoAddress, amountToSendToPlaterforme);
-        sendEther(betWaveDaoAddress, amountToSendToOwner);
+        sendEther(betWaveDaoAddress, amountToSendToPlaterform);
+        sendEther(_ownerAddress, amountToSendToOwner);
     }
 
     function calculateValidatorReward(uint _validatorFees)
     public
-    view
+    //view
     hasAmountContract
     isAuthorized returns (uint)
     {
@@ -176,6 +179,7 @@ contract SimpleBet {
     hasAmountContract
     {
         sendEther(_validatorAddress, _validatorReward);
+        test = 2;
     }
 
     function setFeesBooleanToTrue() public isAuthorized {

@@ -13,7 +13,7 @@ contract BetWaveDAO {
     uint256 public validatorNumberRequired = 4;
     uint256 public platformFees = 150;
     uint256 public creatorFees = 50;
-    uint256 public betQuorum = 85;
+    uint256 public betQuorum = 75;
     uint256 public DAOQuorum = 75;
     uint256 public validatorFees = 10;
     uint256 public userNumber = 1;
