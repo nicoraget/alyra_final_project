@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
+
 import "../contracts/BetWaveOrganizer.sol";
 import "../contracts/BetWaveDAO.sol";
+
 pragma solidity ^0.8.19;
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
 
-    error insufficientBalance();
     error minimumBetAmount();
     error alreadyBet();
     error eventAlreadyStarted();
@@ -51,30 +52,24 @@ contract SimpleBet {
     mapping(uint256 => Competitor) public competitors;
     mapping(address => Bettor) public bettors;
 
-    address payable plateformAddress;
-    address betWavesOrganizerAddress;
-    address betWaveDaoAddress;
+    address public betWavesOrganizerAddress;
+    address public betWaveDaoAddress;
     bool hasFeesBeenPaid;
-    address betWaveDAOAddress;
 
     constructor(
-    //address _owner,
         string memory _compName1,
         string memory _compName2,
     // uint256 _beginEventTimestamp,
     // uint256 _endEventTimestamp,
-        address payable _plateformAddress,
         address _betWavesOrganizerAddress,
         address _betWaveDaoAddress
     ) payable {
-        //transferOwnership(_owner);
-        betWaveOrganizer = BetWaveOrganizer(payable(betWavesOrganizerAddress));
-        betWaveDAO = BetWaveDAO(payable(betWaveDaoAddress));
+        betWaveOrganizer = BetWaveOrganizer(payable(_betWavesOrganizerAddress));
+        betWaveDAO = BetWaveDAO(payable(_betWaveDaoAddress));
         //beginEventTimestamp = _beginEventTimestamp;
         // endEventTimestamp = _endEventTimestamp;
         competitors[0].name = _compName1;
         competitors[1].name = _compName2;
-        plateformAddress = _plateformAddress;
         betWavesOrganizerAddress = _betWavesOrganizerAddress;
         betWaveDaoAddress = _betWaveDaoAddress;
     }
@@ -110,7 +105,13 @@ contract SimpleBet {
         _;
     }
 
-    /*modifier hasEventStarted() {
+    modifier isRegistered() {
+        if (betWaveDAO.userToId(msg.sender) == 0)
+            revert notRegistered();
+        _;
+    }
+
+    modifier hasEventStarted() {
         if (block.timestamp >= beginEventTimestamp)
             revert eventAlreadyStarted();
         _;
@@ -119,34 +120,33 @@ contract SimpleBet {
     modifier hasEventEnded() {
         if (block.timestamp >= endEventTimestamp) revert eventNotEnded();
         _;
-    }*/
+    }
 
-    function setbet(uint256 _betId)
+
+    function setBet(uint256 _betId)
     external
     payable
     hasAmountBettor
     hasMinimumAmount
     hasAlreadyBet
+    isRegistered
         //hasEventStarted
     {
         //require(owner() != msg.sender,"owner cant bet");
-        require(betWaveDAO.userToId(msg.sender) != 0, "user not found");
         require(_betId <= 1, "competitor don't exist");
         sendEther(address(this), msg.value);
         totalBet++;
         competitors[_betId].betNumber++;
-        competitors[_betId].betAmount =
-        competitors[_betId].betAmount +
-        msg.value;
+        competitors[_betId].betAmount = competitors[_betId].betAmount + msg.value;
         oddCalculator();
         updateBettor(_betId);
     }
 
-    function setWinnerId(
+    /*function setWinnerId(
         uint256 _winnerId //hasEventEnded
     ) public {
         winnerId = _winnerId;
-    }
+    }*/
 
     function sendPlatfromAndCreatorFees(
         uint256 _plateformeFees,
@@ -157,8 +157,8 @@ contract SimpleBet {
         uint256 amountToSendToPlaterforme = contractBalanceSnapshot /
         _plateformeFees;
         uint256 amountToSendToOwner = contractBalanceSnapshot / _creatorFees;
-        sendEther(plateformAddress, amountToSendToPlaterforme);
-        sendEther(plateformAddress, amountToSendToOwner);
+        sendEther(betWaveDaoAddress, amountToSendToPlaterforme);
+        sendEther(betWaveDaoAddress, amountToSendToOwner);
     }
 
     function calculateValidatorReward(uint _validatorFees)
@@ -232,3 +232,4 @@ contract SimpleBet {
         calledFallbackFun = "Fallback function is executed!";
     }
 }
+

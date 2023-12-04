@@ -1,0 +1,119 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/justmee/dev/cour_alyra/alyra_final_project/backEnd/contracts/BetWaveDAO.sol": {
+      "lastModificationDate": 1701645558004,
+      "contentHash": "40f2275f5c0f9bca07301ecd9f2fffea",
+      "sourceName": "contracts/BetWaveDAO.sol",
+      "solcConfig": {
+        "version": "0.8.21",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.21"
+      ],
+      "artifacts": [
+        "BetWaveDAO"
+      ]
+    },
+    "/home/justmee/dev/cour_alyra/alyra_final_project/backEnd/contracts/SimpleBet.sol": {
+      "lastModificationDate": 1701647360694,
+      "contentHash": "bebe70cfe25634d365e433832adb69ff",
+      "sourceName": "contracts/SimpleBet.sol",
+      "solcConfig": {
+        "version": "0.8.21",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../contracts/BetWaveOrganizer.sol",
+        "../contracts/BetWaveDAO.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "SimpleBet"
+      ]
+    },
+    "/home/justmee/dev/cour_alyra/alyra_final_project/backEnd/contracts/BetWaveOrganizer.sol": {
+      "lastModificationDate": 1701642114424,
+      "contentHash": "ad0db117b89f1e915a2cc356aceb31c3",
+      "sourceName": "contracts/BetWaveOrganizer.sol",
+      "solcConfig": {
+        "version": "0.8.21",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../contracts/SimpleBet.sol",
+        "../contracts/BetWaveDAO.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.19"
+      ],
+      "artifacts": [
+        "BetWaveOrganizer"
+      ]
+    }
+  }
+}

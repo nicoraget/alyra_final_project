@@ -3,25 +3,30 @@
 pragma solidity ^0.8.21;
 
     error notValidator();
+    error notRegistered();
+    error insufficientBalance();
 
 contract BetWaveDAO {
 
-    string calledFallbackFun = "ta race";
+    string calledFallbackFun = "efblvqhsbdlg";
 
-    uint256 validatorNumberRequired = 4;
-    uint256 platformFees = 150;
-    uint256 creatorFees = 50;
-    uint256 betQuorum = 75;
-    uint256 DAOQuorum = 85;
-    uint256 validatorFees = 10;
+    uint256 public validatorNumberRequired = 4;
+    uint256 public platformFees = 150;
+    uint256 public creatorFees = 50;
+    uint256 public betQuorum = 85;
+    uint256 public DAOQuorum = 75;
+    uint256 public validatorFees = 10;
     uint256 public userNumber = 1;
+    uint256 public validatorNumber;
+    uint256  public daoVoteNumber;
 
     enum VoteType {
         PlatformFee,
         CreatorFees,
         BetQuorum,
         DAOQuorum,
-        ValidatorNumberRequired
+        ValidatorNumberRequired,
+        ValidatorFees
     }
 
     struct DAOVote {
@@ -29,7 +34,7 @@ contract BetWaveDAO {
         uint256 voteFor;
         uint256 voteAgainst;
         uint256 newValue;
-        mapping(address => uint256) hasVoted;
+        mapping(address => bool) hasVoted;
     }
 
     struct User {
@@ -43,8 +48,6 @@ contract BetWaveDAO {
     mapping(uint256 => address) public userList;
     mapping(address => uint256) public userToId;
 
-    uint256 validatorNumber;
-    uint256 daoVoteNumber;
 
     event voteRejected(uint256);
     event newUser(address, uint256);
@@ -56,18 +59,58 @@ contract BetWaveDAO {
     }
 
     modifier doesUserExist() {
-        require(userToId[msg.sender] != 0, "not registered");
+        if (userToId[msg.sender] == 0)
+            revert notRegistered();
         _;
     }
 
+    modifier hasBalance(address _address) {
+        if (_address.balance <= 1 ether)
+            revert insufficientBalance();
+        _;
+    }
+
+    // GETTERS //
+    function getDaoVoteHasVoted(uint _id) external view returns (bool){
+        return DAOVoteList[_id].hasVoted[msg.sender];
+    }
+
+    // GETTERS //
+
+    function addUser() external {
+        require(userToId[msg.sender] == 0, "user already exist");
+        userToId[msg.sender] = userNumber;
+        userList[userNumber++] = payable(msg.sender);
+        emit newUser(msg.sender, userNumber - 1);
+    }
+
+    function addValidators() public payable doesUserExist hasBalance(msg.sender) {
+        require(msg.value == 1 ether, "send 1 eth");
+        require(
+            validators[msg.sender].userAddress != msg.sender,
+            "You already are"
+        );
+        sendEther(address(this), msg.value);
+        validators[msg.sender].userAddress = payable(msg.sender);
+        validatorNumber++;
+    }
+
+    function askDAOVote(VoteType _voteType, uint256 _newValue)
+    public
+    onlyValidator
+    {
+        DAOVoteList[daoVoteNumber].voteType = _voteType;
+        DAOVoteList[daoVoteNumber++].newValue = _newValue;
+    }
+
     function setDaoVote(uint256 _id, uint256 _option) public onlyValidator {
-        require(DAOVoteList[_id].hasVoted[msg.sender] == 0, "already voted");
+        require(DAOVoteList[_id].hasVoted[msg.sender] == false, "already voted");
         if (_option == 1) {
             DAOVoteList[_id].voteFor++;
         } else if (_option == 2) {
             DAOVoteList[_id].voteAgainst++;
         }
-        DAOVoteList[_id].hasVoted[msg.sender] = 1;
+        DAOVoteList[_id].hasVoted[msg.sender] = true;
         if (((DAOVoteList[_id].voteFor * 100) / validatorNumber) >= DAOQuorum) {
             switchVoteType(
                 DAOVoteList[_id].voteType,
@@ -92,30 +135,12 @@ contract BetWaveDAO {
             DAOQuorum = _newValue;
         } else if (_voteType == VoteType.ValidatorNumberRequired) {
             validatorNumberRequired = _newValue;
+        } else if (_voteType == VoteType.ValidatorFees) {
+            validatorFees = _newValue;
         }
     }
 
-    function addUser() external {
-        require(userToId[msg.sender] == 0, "user already exist");
-        userToId[msg.sender] = userNumber;
-        userList[userNumber++] = payable(msg.sender);
-        emit newUser(msg.sender, userNumber - 1);
-    }
-
-    function addValidators() public payable doesUserExist {
-        require(msg.sender.balance > 1 ether, "insufficient balance");
-        require(msg.value == 1 ether, "send 1 eth");
-        require(
-            validators[msg.sender].userAddress != msg.sender,
-            "You already are"
-        );
-        sendEther(address(this), msg.value);
-        validators[msg.sender].userAddress = payable(msg.sender);
-        validatorNumber++;
-    }
-
-    function withdrawFromValidators() public payable {
-        require(address(this).balance >= 1 ether, "insufficient balance");
+    function withdrawFromValidators() public payable hasBalance(address(this)) {
         require(
             validators[msg.sender].userAddress == msg.sender,
             "You are not validators"
@@ -127,18 +152,10 @@ contract BetWaveDAO {
     }
 
     function sendEther(address _to, uint256 _amount) internal {
-        (bool sent, bytes memory received) = payable(_to).call{value: _amount}(
+        (bool sent, bytes memory received) = payable(_to).call{value : _amount}(
             ""
         );
         require(sent, "Failed to send Ether");
-    }
-
-    function askDAOVote(VoteType _voteType, uint256 _amount)
-    public
-    onlyValidator
-    {
-        DAOVoteList[daoVoteNumber].voteType = _voteType;
-        DAOVoteList[daoVoteNumber++].newValue = _amount;
     }
 
     receive() external payable {
