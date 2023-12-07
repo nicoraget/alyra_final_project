@@ -13,8 +13,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-      - run: cd backend/
       - run: npm install
+        working-directory: ./backend
         shell: bash
       - name: Run Tests
+        working-directory: ./backend
         run: npx hardhat coverage
