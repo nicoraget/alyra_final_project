@@ -14,7 +14,6 @@ jobs:
         with:
           node-version: '16.x'
       - run: npm install
-        working-directory: backend
         shell: bash
       - name: Run Tests
         working-directory: backend
