@@ -15,6 +15,7 @@ jobs:
           node-version: '16.x'
       - run: npm install
         shell: bash
+        working-directory: backend
       - name: Run Tests
         working-directory: backend
         run: npx hardhat coverage
