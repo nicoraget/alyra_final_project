@@ -16,7 +16,7 @@ jobs:
       - name: 'create env file'
         run: |
           touch .env
-          echo  PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+          echo PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
           cat .env
       - run: npm install
         shell: bash
