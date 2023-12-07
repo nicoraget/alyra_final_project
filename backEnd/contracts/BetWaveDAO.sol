@@ -13,7 +13,7 @@ contract BetWaveDAO {
     uint256 public validatorNumberRequired = 4;
     uint256 public platformFees = 150;
     uint256 public creatorFees = 50;
-    uint256 public betQuorum = 85;
+    uint256 public betQuorum = 75;
     uint256 public DAOQuorum = 75;
     uint256 public validatorFees = 10;
     uint256 public userNumber = 1;
@@ -75,6 +75,10 @@ contract BetWaveDAO {
         return DAOVoteList[_id].hasVoted[msg.sender];
     }
 
+    function getDaoControlValue() external view returns(uint,uint,uint,uint,uint,uint) {
+        return (validatorNumberRequired,platformFees,creatorFees,betQuorum,DAOQuorum,validatorFees);
+    }
+
     // GETTERS //
 
     function addUser() external {
@@ -124,6 +128,17 @@ contract BetWaveDAO {
         }
     }
 
+    function withdrawFromValidators() public payable hasBalance(address(this)) {
+        require(
+            validators[msg.sender].userAddress == msg.sender,
+            "You are not validators"
+        );
+        uint256 amount = 1e18;
+        sendEther(msg.sender, amount);
+        validators[msg.sender].userAddress = payable(0);
+        validatorNumber--;
+    }
+
     function switchVoteType(VoteType _voteType, uint256 _newValue) internal {
         if (_voteType == VoteType.PlatformFee) {
             platformFees = _newValue;
@@ -138,17 +153,6 @@ contract BetWaveDAO {
         } else if (_voteType == VoteType.ValidatorFees) {
             validatorFees = _newValue;
         }
-    }
-
-    function withdrawFromValidators() public payable hasBalance(address(this)) {
-        require(
-            validators[msg.sender].userAddress == msg.sender,
-            "You are not validators"
-        );
-        uint256 amount = 1e18;
-        sendEther(msg.sender, amount);
-        validators[msg.sender].userAddress = payable(0);
-        validatorNumber--;
     }
 
     function sendEther(address _to, uint256 _amount) internal {

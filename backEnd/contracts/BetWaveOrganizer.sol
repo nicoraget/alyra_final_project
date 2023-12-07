@@ -16,12 +16,11 @@ contract BetWaveOrganizer {
     enum BetStatus {
         betTime,
         VoteTime,
-        CountTime,
+        //CountTime,
         VoteEnded
     }
 
     struct Bet {
-        uint256 validationNumber;
         string compName1;
         string compName2;
         address owner;
@@ -44,6 +43,12 @@ contract BetWaveOrganizer {
     //event voteRejected(uint256);
 
     BetWaveDAO betWaveDAO;
+
+    address public lastSimpleBetAddress;
+
+    uint public test1;
+    uint public test2;
+    uint public test3;
 
     modifier doesUserExist() {
         if (betWaveDAO.userToId(msg.sender) == 0)
@@ -98,6 +103,7 @@ contract BetWaveOrganizer {
                 _compName2,
                 address(this),
                 address(betWaveDAO)));
+        lastSimpleBetAddress = contractAddress;
         betList[contractAddress].compName1 = _compName1;
         betList[contractAddress].compName2 = _compName2;
         betList[contractAddress].owner = msg.sender;
@@ -132,14 +138,16 @@ contract BetWaveOrganizer {
             betList[_betAddress].validatorList.push(msg.sender);
         }
         if (betList[_betAddress].voteCount >= betWaveDAO.validatorNumberRequired()) {
-            betList[_betAddress].betStatus = BetStatus.CountTime;
+            //betList[_betAddress].betStatus = BetStatus.CountTime;
             emit startCount(_betAddress);
+            tallyVote(_betAddress);
         }
     }
 
-    function tallyVote(address _betAddress) external onlyOwner(_betAddress)
-    isCorrectStep(BetStatus.CountTime, _betAddress) {
-        uint256 winnerId;
+    function tallyVote(address _betAddress) internal
+        //onlyOwner(_betAddress)
+        //isCorrectStep(BetStatus.CountTime, _betAddress)
+    {
         if (
             betList[_betAddress].comp1VoteCount >
             betList[_betAddress].comp2VoteCount
@@ -150,7 +158,9 @@ contract BetWaveOrganizer {
                 betList[_betAddress].voteCount >=
                 betWaveDAO.betQuorum()
             ) {
+                SimpleBet(payable(_betAddress)).setWinnerId(0);
                 feesOrchestrator(_betAddress, 0);
+                betList[_betAddress].betStatus = BetStatus.VoteEnded;
             }
         } else if (
             betList[_betAddress].comp1VoteCount <
@@ -162,9 +172,15 @@ contract BetWaveOrganizer {
                 betList[_betAddress].voteCount >=
                 betWaveDAO.betQuorum()
             ) {
+                SimpleBet(payable(_betAddress)).setWinnerId(1);
                 feesOrchestrator(_betAddress, 1);
+                betList[_betAddress].betStatus = BetStatus.VoteEnded;
             }
-        } else revert noWinner();
+        } else
+        {
+            betList[_betAddress].betStatus = BetStatus.VoteEnded;
+            revert noWinner();
+        }
     }
 
     function feesOrchestrator(
@@ -173,8 +189,11 @@ contract BetWaveOrganizer {
     ) internal {
         SimpleBet(payable(_betAddress)).sendPlatfromAndCreatorFees(
             betWaveDAO.platformFees(),
-            betWaveDAO.creatorFees());
+            betWaveDAO.creatorFees(),
+            betList[_betAddress].owner);
+        test2 = address(SimpleBet(payable(_betAddress))).balance;
         uint256 rewardValidator = SimpleBet(payable(_betAddress)).calculateValidatorReward(betWaveDAO.validatorFees());
+        test1 = rewardValidator;
         for (
             uint256 i = 0;
             i < betList[_betAddress].validatorList.length;

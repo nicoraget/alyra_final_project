@@ -8,6 +8,7 @@ import type {
   FunctionFragment,
   Result,
   Interface,
+  EventFragment,
   AddressLike,
   ContractRunner,
   ContractMethod,
@@ -17,6 +18,7 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
+  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
 } from "./common";
@@ -37,8 +39,13 @@ export interface SimpleBetInterface extends Interface {
       | "sendValidatorFees"
       | "setBet"
       | "setFeesBooleanToTrue"
+      | "setWinnerId"
+      | "test"
       | "totalBet"
+      | "winnerId"
   ): FunctionFragment;
+
+  getEvent(nameOrSignatureOrTopic: "newBid"): EventFragment;
 
   encodeFunctionData(
     functionFragment: "beginEventTimestamp",
@@ -78,7 +85,7 @@ export interface SimpleBetInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "sendPlatfromAndCreatorFees",
-    values: [BigNumberish, BigNumberish]
+    values: [BigNumberish, BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "sendValidatorFees",
@@ -92,7 +99,13 @@ export interface SimpleBetInterface extends Interface {
     functionFragment: "setFeesBooleanToTrue",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "setWinnerId",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "test", values?: undefined): string;
   encodeFunctionData(functionFragment: "totalBet", values?: undefined): string;
+  encodeFunctionData(functionFragment: "winnerId", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "beginEventTimestamp",
@@ -140,7 +153,47 @@ export interface SimpleBetInterface extends Interface {
     functionFragment: "setFeesBooleanToTrue",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "setWinnerId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "test", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "totalBet", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "winnerId", data: BytesLike): Result;
+}
+
+export namespace newBidEvent {
+  export type InputTuple = [
+    arg0: AddressLike,
+    arg1: BigNumberish,
+    arg2: BigNumberish,
+    arg3: BigNumberish,
+    arg4: BigNumberish,
+    arg5: BigNumberish,
+    arg6: BigNumberish
+  ];
+  export type OutputTuple = [
+    arg0: string,
+    arg1: bigint,
+    arg2: bigint,
+    arg3: bigint,
+    arg4: bigint,
+    arg5: bigint,
+    arg6: bigint
+  ];
+  export interface OutputObject {
+    arg0: string;
+    arg1: bigint;
+    arg2: bigint;
+    arg3: bigint;
+    arg4: bigint;
+    arg5: bigint;
+    arg6: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface SimpleBet extends BaseContract {
@@ -208,7 +261,7 @@ export interface SimpleBet extends BaseContract {
   calculateValidatorReward: TypedContractMethod<
     [_validatorFees: BigNumberish],
     [bigint],
-    "view"
+    "nonpayable"
   >;
 
   competitors: TypedContractMethod<
@@ -231,7 +284,11 @@ export interface SimpleBet extends BaseContract {
   redeemToBettor: TypedContractMethod<[], [void], "payable">;
 
   sendPlatfromAndCreatorFees: TypedContractMethod<
-    [_plateformeFees: BigNumberish, _creatorFees: BigNumberish],
+    [
+      _plateformeFees: BigNumberish,
+      _creatorFees: BigNumberish,
+      _ownerAddress: AddressLike
+    ],
     [void],
     "nonpayable"
   >;
@@ -246,7 +303,17 @@ export interface SimpleBet extends BaseContract {
 
   setFeesBooleanToTrue: TypedContractMethod<[], [void], "nonpayable">;
 
+  setWinnerId: TypedContractMethod<
+    [_winnerId: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
+  test: TypedContractMethod<[], [bigint], "view">;
+
   totalBet: TypedContractMethod<[], [bigint], "view">;
+
+  winnerId: TypedContractMethod<[], [bigint], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -277,7 +344,11 @@ export interface SimpleBet extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "calculateValidatorReward"
-  ): TypedContractMethod<[_validatorFees: BigNumberish], [bigint], "view">;
+  ): TypedContractMethod<
+    [_validatorFees: BigNumberish],
+    [bigint],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "competitors"
   ): TypedContractMethod<
@@ -304,7 +375,11 @@ export interface SimpleBet extends BaseContract {
   getFunction(
     nameOrSignature: "sendPlatfromAndCreatorFees"
   ): TypedContractMethod<
-    [_plateformeFees: BigNumberish, _creatorFees: BigNumberish],
+    [
+      _plateformeFees: BigNumberish,
+      _creatorFees: BigNumberish,
+      _ownerAddress: AddressLike
+    ],
     [void],
     "nonpayable"
   >;
@@ -322,8 +397,36 @@ export interface SimpleBet extends BaseContract {
     nameOrSignature: "setFeesBooleanToTrue"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "setWinnerId"
+  ): TypedContractMethod<[_winnerId: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "test"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "totalBet"
   ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "winnerId"
+  ): TypedContractMethod<[], [bigint], "view">;
 
-  filters: {};
+  getEvent(
+    key: "newBid"
+  ): TypedContractEvent<
+    newBidEvent.InputTuple,
+    newBidEvent.OutputTuple,
+    newBidEvent.OutputObject
+  >;
+
+  filters: {
+    "newBid(address,uint256,uint256,uint256,uint256,uint256,uint256)": TypedContractEvent<
+      newBidEvent.InputTuple,
+      newBidEvent.OutputTuple,
+      newBidEvent.OutputObject
+    >;
+    newBid: TypedContractEvent<
+      newBidEvent.InputTuple,
+      newBidEvent.OutputTuple,
+      newBidEvent.OutputObject
+    >;
+  };
 }

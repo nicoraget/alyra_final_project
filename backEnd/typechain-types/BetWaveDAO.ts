@@ -34,6 +34,7 @@ export interface BetWaveDAOInterface extends Interface {
       | "betQuorum"
       | "creatorFees"
       | "daoVoteNumber"
+      | "getDaoControlValue"
       | "getDaoVoteHasVoted"
       | "platformFees"
       | "setDaoVote"
@@ -70,6 +71,10 @@ export interface BetWaveDAOInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "daoVoteNumber",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDaoControlValue",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -135,6 +140,10 @@ export interface BetWaveDAOInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "daoVoteNumber",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getDaoControlValue",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -267,6 +276,12 @@ export interface BetWaveDAO extends BaseContract {
 
   daoVoteNumber: TypedContractMethod<[], [bigint], "view">;
 
+  getDaoControlValue: TypedContractMethod<
+    [],
+    [[bigint, bigint, bigint, bigint, bigint, bigint]],
+    "view"
+  >;
+
   getDaoVoteHasVoted: TypedContractMethod<
     [_id: BigNumberish],
     [boolean],
@@ -350,6 +365,13 @@ export interface BetWaveDAO extends BaseContract {
   getFunction(
     nameOrSignature: "daoVoteNumber"
   ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getDaoControlValue"
+  ): TypedContractMethod<
+    [],
+    [[bigint, bigint, bigint, bigint, bigint, bigint]],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "getDaoVoteHasVoted"
   ): TypedContractMethod<[_id: BigNumberish], [boolean], "view">;
