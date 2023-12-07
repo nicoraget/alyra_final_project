@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-      - working-directory: ./backend
+      - run: cd backend/
       - run: npm install
         shell: bash
       - name: Run Tests
