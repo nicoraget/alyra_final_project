@@ -23,4 +23,6 @@ jobs:
         working-directory: backend/
       - name: Run Tests
         working-directory: backend/
-        run: npx hardhat coverage --network hardhat
+        run: |
+          cat .env
+          npx hardhat coverage --network hardhat
