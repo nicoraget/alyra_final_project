@@ -33,7 +33,6 @@ export interface BetWaveOrganizerInterface extends Interface {
       | "lastSimpleBetAddress"
       | "setBetVote"
       | "startBetValidation"
-      | "tallyVote"
       | "test1"
       | "test2"
       | "test3"
@@ -71,10 +70,6 @@ export interface BetWaveOrganizerInterface extends Interface {
     functionFragment: "startBetValidation",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "tallyVote",
-    values: [AddressLike]
-  ): string;
   encodeFunctionData(functionFragment: "test1", values?: undefined): string;
   encodeFunctionData(functionFragment: "test2", values?: undefined): string;
   encodeFunctionData(functionFragment: "test3", values?: undefined): string;
@@ -101,7 +96,6 @@ export interface BetWaveOrganizerInterface extends Interface {
     functionFragment: "startBetValidation",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "tallyVote", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "test1", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "test2", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "test3", data: BytesLike): Result;
@@ -191,8 +185,7 @@ export interface BetWaveOrganizer extends BaseContract {
   betList: TypedContractMethod<
     [arg0: AddressLike],
     [
-      [bigint, string, string, string, bigint, bigint, bigint, bigint] & {
-        validationNumber: bigint;
+      [string, string, string, bigint, bigint, bigint, bigint] & {
         compName1: string;
         compName2: string;
         owner: string;
@@ -237,12 +230,6 @@ export interface BetWaveOrganizer extends BaseContract {
     "nonpayable"
   >;
 
-  tallyVote: TypedContractMethod<
-    [_betAddress: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
   test1: TypedContractMethod<[], [bigint], "view">;
 
   test2: TypedContractMethod<[], [bigint], "view">;
@@ -258,8 +245,7 @@ export interface BetWaveOrganizer extends BaseContract {
   ): TypedContractMethod<
     [arg0: AddressLike],
     [
-      [bigint, string, string, string, bigint, bigint, bigint, bigint] & {
-        validationNumber: bigint;
+      [string, string, string, bigint, bigint, bigint, bigint] & {
         compName1: string;
         compName2: string;
         owner: string;
@@ -300,9 +286,6 @@ export interface BetWaveOrganizer extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "startBetValidation"
-  ): TypedContractMethod<[_betAddress: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "tallyVote"
   ): TypedContractMethod<[_betAddress: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "test1"

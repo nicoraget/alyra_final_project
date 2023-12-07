@@ -58,6 +58,8 @@ contract SimpleBet {
 
     uint public test;
 
+    event newBid(address,uint,uint,uint,uint,uint,uint);
+
     constructor(
         string memory _compName1,
         string memory _compName2,
@@ -142,6 +144,7 @@ contract SimpleBet {
         competitors[_betId].betAmount = competitors[_betId].betAmount + msg.value;
         oddCalculator();
         updateBettor(_betId);
+        emit newBid(address(this),competitors[0].betNumber,competitors[0].betAmount,competitors[0].odd,competitors[1].betNumber,competitors[1].betAmount,competitors[1].odd);
     }
 
     /*function setWinnerId(

@@ -21,7 +21,6 @@ contract BetWaveOrganizer {
     }
 
     struct Bet {
-        uint256 validationNumber;
         string compName1;
         string compName2;
         address owner;
@@ -141,11 +140,14 @@ contract BetWaveOrganizer {
         if (betList[_betAddress].voteCount >= betWaveDAO.validatorNumberRequired()) {
             betList[_betAddress].betStatus = BetStatus.CountTime;
             emit startCount(_betAddress);
+            tallyVote(_betAddress);
         }
     }
 
-    function tallyVote(address _betAddress) external onlyOwner(_betAddress)
-    isCorrectStep(BetStatus.CountTime, _betAddress) {
+    function tallyVote(address _betAddress) internal
+    //onlyOwner(_betAddress)
+    //isCorrectStep(BetStatus.CountTime, _betAddress)
+    {
         if (
             betList[_betAddress].comp1VoteCount >
             betList[_betAddress].comp2VoteCount

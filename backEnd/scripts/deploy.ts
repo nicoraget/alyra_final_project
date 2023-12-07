@@ -11,9 +11,9 @@ export async function deployBetWaveDAO() {
     console.log("Transaction Hash :", hash);
     console.log("Block number :", blockNumber);
     const betWaveDAOAddress = betWaveDAO.target;
-    console.log(betWaveDAOAddress)
     const betWaveOrganizer = await ethers.deployContract("BetWaveOrganizer", [betWaveDAOAddress]);
     await betWaveOrganizer.waitForDeployment();
+    console.log("Contract Address :", betWaveOrganizer.target);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

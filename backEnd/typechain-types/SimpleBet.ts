@@ -8,6 +8,7 @@ import type {
   FunctionFragment,
   Result,
   Interface,
+  EventFragment,
   AddressLike,
   ContractRunner,
   ContractMethod,
@@ -17,6 +18,7 @@ import type {
   TypedContractEvent,
   TypedDeferredTopicFilter,
   TypedEventLog,
+  TypedLogDescription,
   TypedListener,
   TypedContractMethod,
 } from "./common";
@@ -40,6 +42,8 @@ export interface SimpleBetInterface extends Interface {
       | "test"
       | "totalBet"
   ): FunctionFragment;
+
+  getEvent(nameOrSignatureOrTopic: "newBid"): EventFragment;
 
   encodeFunctionData(
     functionFragment: "beginEventTimestamp",
@@ -144,6 +148,40 @@ export interface SimpleBetInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "test", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "totalBet", data: BytesLike): Result;
+}
+
+export namespace newBidEvent {
+  export type InputTuple = [
+    arg0: AddressLike,
+    arg1: BigNumberish,
+    arg2: BigNumberish,
+    arg3: BigNumberish,
+    arg4: BigNumberish,
+    arg5: BigNumberish,
+    arg6: BigNumberish
+  ];
+  export type OutputTuple = [
+    arg0: string,
+    arg1: bigint,
+    arg2: bigint,
+    arg3: bigint,
+    arg4: bigint,
+    arg5: bigint,
+    arg6: bigint
+  ];
+  export interface OutputObject {
+    arg0: string;
+    arg1: bigint;
+    arg2: bigint;
+    arg3: bigint;
+    arg4: bigint;
+    arg5: bigint;
+    arg6: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface SimpleBet extends BaseContract {
@@ -345,5 +383,24 @@ export interface SimpleBet extends BaseContract {
     nameOrSignature: "totalBet"
   ): TypedContractMethod<[], [bigint], "view">;
 
-  filters: {};
+  getEvent(
+    key: "newBid"
+  ): TypedContractEvent<
+    newBidEvent.InputTuple,
+    newBidEvent.OutputTuple,
+    newBidEvent.OutputObject
+  >;
+
+  filters: {
+    "newBid(address,uint256,uint256,uint256,uint256,uint256,uint256)": TypedContractEvent<
+      newBidEvent.InputTuple,
+      newBidEvent.OutputTuple,
+      newBidEvent.OutputObject
+    >;
+    newBid: TypedContractEvent<
+      newBidEvent.InputTuple,
+      newBidEvent.OutputTuple,
+      newBidEvent.OutputObject
+    >;
+  };
 }

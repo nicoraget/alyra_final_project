@@ -26,9 +26,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -41,8 +38,8 @@
       ]
     },
     "/home/justmee/dev/cour_alyra/alyra_final_project/backEnd/contracts/SimpleBet.sol": {
-      "lastModificationDate": 1701715894332,
-      "contentHash": "a69831bd53d9c61cdddfb11353ae8305",
+      "lastModificationDate": 1701877750075,
+      "contentHash": "040c533ea0cd2cf26af413157fed7001",
       "sourceName": "contracts/SimpleBet.sol",
       "solcConfig": {
         "version": "0.8.21",
@@ -65,9 +62,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -83,8 +77,8 @@
       ]
     },
     "/home/justmee/dev/cour_alyra/alyra_final_project/backEnd/contracts/BetWaveOrganizer.sol": {
-      "lastModificationDate": 1701716259082,
-      "contentHash": "a4fe474a91833aec5f98a82bbafb2d8c",
+      "lastModificationDate": 1701908493115,
+      "contentHash": "b5271a1f7309bc807b8fd607abde1f1f",
       "sourceName": "contracts/BetWaveOrganizer.sol",
       "solcConfig": {
         "version": "0.8.21",
@@ -107,9 +101,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
