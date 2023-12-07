@@ -330,6 +330,19 @@ export const simpleBet = {
             "type": "function"
         },
         {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_winnerId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "setWinnerId",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
             "inputs": [],
             "name": "test",
             "outputs": [
@@ -345,6 +358,19 @@ export const simpleBet = {
         {
             "inputs": [],
             "name": "totalBet",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "winnerId",
             "outputs": [
                 {
                     "internalType": "uint256",

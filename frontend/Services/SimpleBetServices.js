@@ -20,6 +20,22 @@ export const deploySimpleBet = async () => {
     }
 }
 
+export const redeemGain = async (address) => {
+    try {
+        const walletClient = await getWalletClient();
+        const {request} = await prepareWriteContract({
+            address: address,
+            abi: simpleBet.abi,
+            account: walletClient?.account,
+            functionName: "redeemToBettor",
+        });
+        const {hash} = await writeContract(request)
+        console.log(hash)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const SetNewBet = async (address, betId, value) => {
     try {
         console.log(value)

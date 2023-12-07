@@ -3,7 +3,7 @@ import {useAccount} from 'wagmi'
 import {AddSimpleBetModal} from "@/components/Modal/AddSimpleBetModal";
 import {AddUser} from "@/components/UserManagement/AddUser";
 import {useEffect, useState} from "react";
-import {isUserExist} from "@/Services/UserService";
+import {isUserExist} from "@/Services/betDAOService";
 import {BetList} from "@/components/BetList/BetList";
 
 

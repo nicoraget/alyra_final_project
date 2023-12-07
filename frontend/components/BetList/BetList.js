@@ -14,7 +14,7 @@ import {
     Tr,
     useDisclosure
 } from "@chakra-ui/react";
-import {getNewBet, getSimpleBetData, SetNewBet} from "@/Services/SimpleBetServices";
+import {getNewBet, getSimpleBetData, redeemGain, SetNewBet} from "@/Services/SimpleBetServices";
 import * as ethers from "viem";
 import {getBetFromBetOrganizer, startValidation} from "@/Services/BetOrganizerService";
 
@@ -144,8 +144,10 @@ export const BetList = () => {
                                 </Td>
                                 <Td> <Button colorScheme='telegram'
                                              onClick={() => callSetNewBet(bet.address, selectedCompetitor)}>Bet</Button></Td>
-                                <Td> {(address === bet.owner) &&
-                                    <Button onClick={() => startValidation(bet.address)}>Start validation</Button>}</Td>
+                                <Td>
+                                    {(address === bet.owner) && (bet.betStatus ===0) ?  <Button onClick={() => startValidation(bet.address)}>Start validation</Button>:
+                                    <Button onClick={() => redeemGain(bet.address)}>Redeem</Button>}
+                                </Td>
                             </Tr>
                         ))}
                     </Tbody>

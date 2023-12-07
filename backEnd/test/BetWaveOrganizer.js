@@ -390,7 +390,7 @@ describe("BetWaveOrganizer", () => {
             expect(validatorAddress).to.equals(user1.address);
         });
 
-        it("should set bet status to count time if validator number required is reached", async () => {
+       /* it("should set bet status to count time if validator number required is reached", async () => {
             //GIVEN
             const {betWaveOrganizer, betWaveDAO, user1, user2, user3, user4} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
@@ -412,7 +412,7 @@ describe("BetWaveOrganizer", () => {
 
             //THEN
             expect(betStatus).to.equals(expectedBetStatus);
-        });
+        });*/
 
         it("should emit start count event when validator number is reached", async () => {
             //GIVEN
@@ -422,7 +422,9 @@ describe("BetWaveOrganizer", () => {
             await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             await user1.sendTransaction({to: await betWaveDAO.getAddress(), value: ethers.parseEther("10")});
-            await user1.sendTransaction({to: simpleBetAddress, value: ethers.parseEther("10")});
+            const SimpleBet = await ethers.getContractFactory("SimpleBet");
+            const simpleBet = await SimpleBet.attach(simpleBetAddress);
+            await simpleBet.connect(user1).setBet(1, {value: ethers.parseEther("2")});
             const compId = 1;
             await betWaveOrganizer.connect(user1).startBetValidation(simpleBetAddress);
 
@@ -538,7 +540,7 @@ describe("BetWaveOrganizer", () => {
             const compId = 1;
             const SimpleBet = await ethers.getContractFactory("SimpleBet");
             const simpleBet = await SimpleBet.attach(simpleBetAddress);
-            await simpleBet.connect(user1).setBet(0, {value: ethers.parseEther("2")});
+            await simpleBet.connect(user1).setBet(1, {value: ethers.parseEther("2")});
             await betWaveOrganizer.connect(user1).startBetValidation(simpleBetAddress);
             await betWaveOrganizer.connect(user1).setBetVote(compId, simpleBetAddress);
             await betWaveOrganizer.connect(user2).setBetVote(compId, simpleBetAddress);
@@ -554,6 +556,54 @@ describe("BetWaveOrganizer", () => {
 
             //THEN
             expect(betWaveDaoBalanceNext).to.equals(expectedBalance);
+        });
+
+        it("should set winner id to 0", async () => {
+            //GIVEN
+            const {betWaveOrganizer, user1, user2, user3, user4} = await loadFixture(deployFixture);
+            const compName1 = "max verstappen";
+            const compName2 = "charles leclerc";
+            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
+            const compId = 0;
+            const SimpleBet = await ethers.getContractFactory("SimpleBet");
+            const simpleBet = await SimpleBet.attach(simpleBetAddress);
+            await simpleBet.connect(user1).setBet(0, {value: ethers.parseEther("2")});
+            await betWaveOrganizer.connect(user1).startBetValidation(simpleBetAddress);
+            await betWaveOrganizer.connect(user1).setBetVote(compId, simpleBetAddress);
+            await betWaveOrganizer.connect(user2).setBetVote(compId, simpleBetAddress);
+            await betWaveOrganizer.connect(user3).setBetVote(compId, simpleBetAddress);
+
+            //WHEN
+            await betWaveOrganizer.connect(user4).setBetVote(compId, simpleBetAddress);
+           const expectedWinnerId = await simpleBet.winnerId();
+
+            //THEN
+            expect(expectedWinnerId).to.equals(compId);
+        });
+
+        it("should set winner id to 1", async () => {
+            //GIVEN
+            const {betWaveOrganizer, user1, user2, user3, user4} = await loadFixture(deployFixture);
+            const compName1 = "max verstappen";
+            const compName2 = "charles leclerc";
+            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
+            const compId = 1;
+            const SimpleBet = await ethers.getContractFactory("SimpleBet");
+            const simpleBet = await SimpleBet.attach(simpleBetAddress);
+            await simpleBet.connect(user1).setBet(1, {value: ethers.parseEther("2")});
+            await betWaveOrganizer.connect(user1).startBetValidation(simpleBetAddress);
+            await betWaveOrganizer.connect(user1).setBetVote(compId, simpleBetAddress);
+            await betWaveOrganizer.connect(user2).setBetVote(compId, simpleBetAddress);
+            await betWaveOrganizer.connect(user3).setBetVote(compId, simpleBetAddress);
+
+            //WHEN
+            await betWaveOrganizer.connect(user4).setBetVote(compId, simpleBetAddress);
+            const expectedWinnerId = await simpleBet.winnerId();
+
+            //THEN
+            expect(expectedWinnerId).to.equals(compId);
         });
 
         it("should call sendPlatformAndCreatorFee and send fees to creator with comp2 winner", async () => {
@@ -574,7 +624,7 @@ describe("BetWaveOrganizer", () => {
             const compId = 1;
             const SimpleBet = await ethers.getContractFactory("SimpleBet");
             const simpleBet = await SimpleBet.attach(simpleBetAddress);
-            await simpleBet.connect(user2).setBet(0, {value: ethers.parseEther("2")});
+            await simpleBet.connect(user2).setBet(1, {value: ethers.parseEther("2")});
             await betWaveOrganizer.connect(user5).startBetValidation(simpleBetAddress);
             await betWaveOrganizer.connect(user1).setBetVote(compId, simpleBetAddress);
             await betWaveOrganizer.connect(user2).setBetVote(compId, simpleBetAddress);

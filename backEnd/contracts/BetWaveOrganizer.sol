@@ -16,7 +16,7 @@ contract BetWaveOrganizer {
     enum BetStatus {
         betTime,
         VoteTime,
-        CountTime,
+        //CountTime,
         VoteEnded
     }
 
@@ -138,15 +138,15 @@ contract BetWaveOrganizer {
             betList[_betAddress].validatorList.push(msg.sender);
         }
         if (betList[_betAddress].voteCount >= betWaveDAO.validatorNumberRequired()) {
-            betList[_betAddress].betStatus = BetStatus.CountTime;
+            //betList[_betAddress].betStatus = BetStatus.CountTime;
             emit startCount(_betAddress);
             tallyVote(_betAddress);
         }
     }
 
     function tallyVote(address _betAddress) internal
-    //onlyOwner(_betAddress)
-    //isCorrectStep(BetStatus.CountTime, _betAddress)
+        //onlyOwner(_betAddress)
+        //isCorrectStep(BetStatus.CountTime, _betAddress)
     {
         if (
             betList[_betAddress].comp1VoteCount >
@@ -158,8 +158,9 @@ contract BetWaveOrganizer {
                 betList[_betAddress].voteCount >=
                 betWaveDAO.betQuorum()
             ) {
+                SimpleBet(payable(_betAddress)).setWinnerId(0);
                 feesOrchestrator(_betAddress, 0);
-                test3 = address(SimpleBet(payable(_betAddress))).balance;
+                betList[_betAddress].betStatus = BetStatus.VoteEnded;
             }
         } else if (
             betList[_betAddress].comp1VoteCount <
@@ -171,9 +172,15 @@ contract BetWaveOrganizer {
                 betList[_betAddress].voteCount >=
                 betWaveDAO.betQuorum()
             ) {
+                SimpleBet(payable(_betAddress)).setWinnerId(1);
                 feesOrchestrator(_betAddress, 1);
+                betList[_betAddress].betStatus = BetStatus.VoteEnded;
             }
-        } else revert noWinner();
+        } else
+        {
+            betList[_betAddress].betStatus = BetStatus.VoteEnded;
+            revert noWinner();
+        }
     }
 
     function feesOrchestrator(

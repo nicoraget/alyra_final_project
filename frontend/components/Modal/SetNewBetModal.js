@@ -13,13 +13,22 @@ import {useState} from "react";
 import {getWalletClient, prepareWriteContract, readContract, writeContract} from "@wagmi/core";
 import {useAccount} from "wagmi";
 import {betWaveOrganizer, BetWaveOrganizerAbi, BetWaveOrganizerAddress} from "@/constants/BetWaveOrganizer";
+import {askDaoVote} from "@/Services/betDAOService";
 
-export const SetNewBetModal = (competitor1,competitor2) => {
+export const AskDAOVote = () => {
 
     const {isOpen, onOpen, onClose} = useDisclosure()
-    const [depositAmount, setDepositAmount] = useState('');
+    const [newValue, setNewValue] = useState(0);
+    const [voteTypeIndex, setNewVoteTypeIndex] = useState(0)
 
-
+    const voteType = [
+        'PlatformFee',
+        'CreatorFees',
+        'BetQuorum',
+        'DAOQuorum',
+        'ValidatorNumberRequired',
+        'ValidatorFees',
+    ]
     const modalButton = {
         display: 'flex',
         alignItems: 'center',
@@ -29,9 +38,9 @@ export const SetNewBetModal = (competitor1,competitor2) => {
     return (
         <>
             <div style={modalButton}>
-                <Button onClick={onOpen} colorScheme='telegram'>Bet</Button>
+                <Button onClick={onOpen} colorScheme='telegram'>Ask Dao Vote</Button>
             </div>
-            <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+            <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} size={'xl'}>
                 <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>Create your bet</ModalHeader>
@@ -40,22 +49,29 @@ export const SetNewBetModal = (competitor1,competitor2) => {
                         <Heading as={'h2'} size={'m'} mt={'2rem'}>
                             Choose your champion
                         </Heading>
-                        <Select>
-                        <option value='0'>{competitor1}</option>
-                        <option value='1'>{competitor2}</option>
+                        <Select
+                            onChange={(event) =>
+                                setNewVoteTypeIndex(BigInt(event.target.value))
+                            }>
+                            <option value='0'>{voteType[0]}</option>
+                            <option value='1'>{voteType[1]}</option>
+                            <option value='2'>{voteType[2]}</option>
+                            <option value='3'>{voteType[3]}</option>
+                            <option value='4'>{voteType[4]}</option>
+                            <option value='5'>{voteType[5]}</option>
                         </Select>
 
                         <Heading as={'h2'} size={'m'} mt={'2rem'}>
-                           Choose your bet amount
+                            Choose your bet amount
                         </Heading>
-                        <Input placeholder={'deposit amount'} value={depositAmount}
+                        <Input type={'number'} placeholder={'deposit amount'} value={newValue}
                                onChange={(e) => {
-                                   setDepositAmount(e.target.value)
+                                   setNewValue(e.target.value)
                                }}></Input>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={deploySimpleBet}>
+                        <Button colorScheme='blue' mr={3} onClick={() => askDaoVote(voteTypeIndex,newValue)}>
                             Save
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>

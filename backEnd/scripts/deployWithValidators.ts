@@ -36,7 +36,7 @@ export async function deployBetWaveDAO() {
     const SimpleBet2= await ethers.getContractFactory("SimpleBet");
     const simpleBet2 = await SimpleBet2.attach(await betWaveOrganizer.lastSimpleBetAddress());
 
-    simpleBet2.connect(user2).setBet(1,{value: ethers.parseEther('2')});
+    simpleBet2.connect(user1).setBet(1,{value: ethers.parseEther('2')});
     simpleBet2.connect(user2).setBet(1,{value: ethers.parseEther('2')});
     simpleBet2.connect(user3).setBet(1,{value: ethers.parseEther('2')});
     simpleBet2.connect(user4).setBet(0,{value: ethers.parseEther('25')});

@@ -46,7 +46,7 @@ contract SimpleBet {
     uint256 public beginEventTimestamp;
     uint256 public endEventTimestamp;
     uint256 public totalBet;
-    uint256 winnerId;
+    uint256 public winnerId;
     uint256 winningCoefficient;
 
     mapping(uint256 => Competitor) public competitors;
@@ -147,11 +147,11 @@ contract SimpleBet {
         emit newBid(address(this),competitors[0].betNumber,competitors[0].betAmount,competitors[0].odd,competitors[1].betNumber,competitors[1].betAmount,competitors[1].odd);
     }
 
-    /*function setWinnerId(
+    function setWinnerId(
         uint256 _winnerId //hasEventEnded
-    ) public {
+    ) public isAuthorized {
         winnerId = _winnerId;
-    }*/
+    }
 
     function sendPlatfromAndCreatorFees(
         uint256 _plateformeFees,

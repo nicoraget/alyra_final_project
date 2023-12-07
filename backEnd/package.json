@@ -5,5 +5,8 @@
     "@nomicfoundation/hardhat-toolbox-viem": "^2.0.0",
     "hardhat": "^2.19.1",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
   }
 }
