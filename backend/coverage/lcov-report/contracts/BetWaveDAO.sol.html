@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">96.43% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>27/27</span>
+        <span class='fraction'>27/28</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">92% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>46/50</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">91.67% </span>
+        <span class="strong">84.62% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>11/12</span>
+        <span class='fraction'>11/13</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">97.78% </span>
+        <span class="strong">95.65% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>44/45</span>
+        <span class='fraction'>44/46</span>
       </div>
     </div>
   </div>
@@ -212,7 +212,11 @@
 167
 168
 169
-170</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+170
+171
+172
+173
+174</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -290,6 +294,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">64×</span>
@@ -339,6 +347,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13×</span>
 <span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -352,17 +371,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">3×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -458,6 +466,10 @@ contract BetWaveDAO {
         return DAOVoteList[_id].hasVoted[msg.sender];
     }
 &nbsp;
+<span class="fstat-no" title="function not covered" >    function getDaoControlValue() external view returns(uint,uint,uint,uint,uint,uint) {</span>
+<span class="cstat-no" title="statement not covered" >        return (validatorNumberRequired,platformFees,creatorFees,betQuorum,DAOQuorum,validatorFees);</span>
+    }
+&nbsp;
     // GETTERS //
 &nbsp;
     function addUser() external {
@@ -507,6 +519,17 @@ contract BetWaveDAO {
         }
     }
 &nbsp;
+    function withdrawFromValidators() public payable hasBalance(address(this)) {
+        require(
+            validators[msg.sender].userAddress == msg.sender,
+            "You are not validators"
+        );
+        uint256 amount = 1e18;
+        sendEther(msg.sender, amount);
+        validators[msg.sender].userAddress = payable(0);
+        validatorNumber--;
+    }
+&nbsp;
     function switchVoteType(VoteType _voteType, uint256 _newValue) internal {
         if (_voteType == VoteType.PlatformFee) {
             platformFees = _newValue;
@@ -521,17 +544,6 @@ contract BetWaveDAO {
         } else <span class="missing-if-branch" title="else path not taken" >E</span>if (_voteType == VoteType.ValidatorFees) {
             validatorFees = _newValue;
         }
-    }
-&nbsp;
-    function withdrawFromValidators() public payable hasBalance(address(this)) {
-        require(
-            validators[msg.sender].userAddress == msg.sender,
-            "You are not validators"
-        );
-        uint256 amount = 1e18;
-        sendEther(msg.sender, amount);
-        validators[msg.sender].userAddress = payable(0);
-        validatorNumber--;
     }
 &nbsp;
     function sendEther(address _to, uint256 _amount) internal {
@@ -556,7 +568,7 @@ contract BetWaveDAO {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Dec 07 2023 12:31:45 GMT+0100 (Central European Standard Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Dec 08 2023 00:27:33 GMT+0100 (Central European Standard Time)
 </div>
 </div>
 <script src="../prettify.js"></script>
