@@ -16,6 +16,11 @@ jobs:
       - run: npm install
         shell: bash
         working-directory: backend/
+      - name: 'create env file'
+        run: |
+          touch .env
+          echo  PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+          cat .env
       - name: Run Tests
         working-directory: backend/
-        run: npx hardhat coverage
+        run: npx hardhat coverage --network hardhat
