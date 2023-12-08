@@ -99,7 +99,7 @@ export const BetList = () => {
     }
 
     return (
-        <Card width={'90%'}>
+        <Card>
             <CardBody>
                 <TableContainer width={"auto"}>
                     <Table variant="simple" colorScheme='#FF595A'>
