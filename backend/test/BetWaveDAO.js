@@ -156,6 +156,18 @@ describe("BetWaveDAO", () => {
             //THEN
             await expect(betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1")})).to.be.revertedWithCustomError(betWaveDAO, "notRegistered");
         });
+
+        it("Should emit newValidator event", async () => {
+            //GIVEN
+            const {betWaveDAO, user1} = await loadFixture(deployFixture);
+            await betWaveDAO.connect(user1).addUser();
+
+            //THEN
+            await expect(betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1")}))
+                .to.emit(betWaveDAO, "newValidator")
+                .withArgs(user1.address);
+        });
+
     });
 
     describe("askDAOVote", () => {
@@ -220,6 +232,20 @@ describe("BetWaveDAO", () => {
 
             //THEN
             expect(daoVoteNumber).to.equals(ExpectedDAOVoteNUmber);
+        });
+
+        it("Should emit newDAOVote event", async () => {
+            //GIVEN
+            const {betWaveDAO, user1} = await loadFixture(deployFixture);
+            await betWaveDAO.connect(user1).addUser();
+            await betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1")});
+            const voteType = 0;
+            const newValue = 10;
+
+            //THEN
+            await expect(betWaveDAO.connect(user1).askDAOVote(voteType,newValue))
+                .to.emit(betWaveDAO, "newDAOVote")
+                .withArgs(voteType,newValue);
         });
 
     });
@@ -491,8 +517,54 @@ describe("BetWaveDAO", () => {
             //THEN
             expect(DAOQuorum).to.equals(expectedNewValue);
         });
+
+        it("Should emit setDAOVote event", async () => {
+            //GIVEN
+            const {betWaveDAO, user1} = await loadFixture(deployFixture);
+            await betWaveDAO.connect(user1).addUser();
+            await betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1")});
+            const voteType = 0;
+            const newValue = 10;
+            const daoVoteId = 0;
+            const daoVoteOption = 1;
+            await betWaveDAO.connect(user1).askDAOVote(voteType, newValue);
+
+            //THEN
+            await expect(betWaveDAO.connect(user1).setDaoVote(daoVoteId,daoVoteOption))
+                .to.emit(betWaveDAO, "setDAOVote")
+                .withArgs(user1.address,daoVoteId,daoVoteOption);
+        });
+
+        it("Should emit voteRejected event", async () => {
+            //GIVEN
+            const {betWaveDAO, user1,user2,user3,user4} = await loadFixture(deployFixture);
+            await betWaveDAO.connect(user1).addUser();
+            await betWaveDAO.connect(user2).addUser();
+            await betWaveDAO.connect(user3).addUser();
+            await betWaveDAO.connect(user4).addUser();
+            await betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user2).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user3).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user4).addValidators({value: ethers.parseEther("1")});
+            const voteType = 0;
+            const newValue = 10;
+            const daoVoteId = 0;
+            const daoVoteOption = 2;
+            await betWaveDAO.connect(user1).askDAOVote(voteType, newValue);
+            await betWaveDAO.connect(user1).setDaoVote(daoVoteId, daoVoteOption);
+            await betWaveDAO.connect(user2).setDaoVote(daoVoteId, daoVoteOption);
+            await betWaveDAO.connect(user3).setDaoVote(daoVoteId, daoVoteOption);
+
+            //THEN
+            await expect(betWaveDAO.connect(user4).setDaoVote(daoVoteId,daoVoteOption))
+                .to.emit(betWaveDAO, "voteRejected")
+                .withArgs(daoVoteId);
+        });
+
     });
+
     describe("WithdrawFromValidators", () => {
+
         it("should fail if contract has less than 1 ether", async () => {
             //GIVEN
             const {betWaveDAO, user1} = await loadFixture(deployFixture);
@@ -565,6 +637,25 @@ describe("BetWaveDAO", () => {
 
             //THEN
             expect(validatorNumber).to.equals(expectedValidatorNumber);
+        });
+
+        it("Should emit voteRejected event", async () => {
+            //GIVEN
+            const {betWaveDAO, user1,user2,user3,user4} = await loadFixture(deployFixture);
+            await betWaveDAO.connect(user1).addUser();
+            await betWaveDAO.connect(user2).addUser();
+            await betWaveDAO.connect(user3).addUser();
+            await betWaveDAO.connect(user4).addUser();
+            await betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user2).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user3).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user4).addValidators({value: ethers.parseEther("1")});
+            const expectedValidatorNumber = 3;
+
+            //THEN
+            await expect(betWaveDAO.connect(user4).withdrawFromValidators())
+                .to.emit(betWaveDAO, "withdrawValidator")
+                .withArgs(user4.address,expectedValidatorNumber);
         });
 
     });

@@ -13,7 +13,7 @@ import {useState} from "react";
 import {getWalletClient, prepareWriteContract, readContract, writeContract} from "@wagmi/core";
 import {useAccount} from "wagmi";
 import {betWaveOrganizer, BetWaveOrganizerAbi, BetWaveOrganizerAddress} from "@/constants/BetWaveOrganizer";
-import {askDaoVote} from "@/Services/betDAOService";
+import {askDaoVote} from "@/services/betDAOService";
 
 export const AskDAOVote = () => {
 
@@ -35,14 +35,21 @@ export const AskDAOVote = () => {
         justifyContent: 'center',
     }
 
+    const buttonStyle = {
+        boxShadow: '4px 2px 2px #001233',
+        borderRadius: '10px',
+        color: '#FF595A',
+        background: '#001233'
+    }
+
     return (
         <>
             <div style={modalButton}>
-                <Button onClick={onOpen} colorScheme='telegram'>Ask Dao Vote</Button>
+                <Button onClick={onOpen} style={buttonStyle}>Ask Dao Vote</Button>
             </div>
-            <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} size={'xl'}>
+            <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} size={'lg'}>
                 <ModalOverlay/>
-                <ModalContent>
+                <ModalContent height={'24rem'}>
                     <ModalHeader>Create your bet</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody pb={6}>
@@ -71,7 +78,7 @@ export const AskDAOVote = () => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={() => askDaoVote(voteTypeIndex,newValue)}>
+                        <Button color='blue' mr={3} onClick={() => askDaoVote(voteTypeIndex,newValue)}>
                             Save
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>

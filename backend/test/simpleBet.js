@@ -20,6 +20,7 @@ async function deployFixture() {
     await betWaveDAO.connect(user4).addValidators({value: ethers.parseEther("1")});
     const SimpleBet = await ethers.getContractFactory("SimpleBet");
     const simpleBet = await SimpleBet.deploy(
+        "Vader vs Sauron",
         "max verstappen",
         "kimi raikonnen",
         await betWaveOrganizer.getAddress(),
@@ -76,6 +77,20 @@ describe("SimpleBet", () => {
             //THEN
             expect(name).to.equals(expectedCompName2);
         });
+
+        it("should set bet name", async () => {
+            //GIVEN
+            const compId = 1;
+            const expectedBetName = "Vader vs Sauron";
+
+            //WHEN
+            const {simpleBet} = await loadFixture(deployFixture);
+            const betname = await simpleBet.betName();
+
+            //THEN
+            expect(betname).to.equals(expectedBetName);
+        });
+
     });
 
     describe("setBet", () => {
@@ -287,7 +302,7 @@ describe("SimpleBet", () => {
             await simpleBet.connect(user1).setBet(betId, {value: ethers.parseEther("10")});
 
             //THEN
-            await expect(simpleBet.connect(user1).sendPlatfromAndCreatorFees(platformFees, creatorFees)).to.be.revertedWithCustomError(simpleBet, 'forbidden');
+            await expect(simpleBet.connect(user1).sendPlatfromAndCreatorFees(platformFees, creatorFees,user1.address)).to.be.revertedWithCustomError(simpleBet, 'forbidden');
         });
 
     });

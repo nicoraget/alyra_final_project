@@ -33,10 +33,11 @@ describe("BetWaveOrganizer", () => {
             const betWaveOrganizer = await BetWaveOrganizer.deploy(await betWaveDAO.getAddress());
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
+            const betName = "F1 2023 championship"
 
             //WHEN
             //THEN
-            await expect(betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2)).to.be.revertedWithCustomError(betWaveOrganizer, 'notRegistered');
+            await expect(betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2)).to.be.revertedWithCustomError(betWaveOrganizer, 'notRegistered');
         });
 
         it("should fail if not enough validators", async () => {
@@ -49,10 +50,11 @@ describe("BetWaveOrganizer", () => {
             await betWaveDAO.connect(user1).addUser();
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
+            const betName = "F1 2023 championship"
 
             //WHEN
             //THEN
-            await expect(betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2)).to.be.revertedWith("not enough validator");
+            await expect(betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2)).to.be.revertedWith("not enough validator");
         });
 
         it("should set comp 1 to betList", async () => {
@@ -60,9 +62,10 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const expectedCompName1 = "max verstappen";
             const compName2 = "charles leclerc";
+            const betName = "F1 2023 championship"
 
             //WHEN
-            await betWaveOrganizer.connect(user1).deployNewBet(expectedCompName1, compName2);
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, expectedCompName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const {compName1} = await betWaveOrganizer.betList(simpleBetAddress);
 
@@ -75,9 +78,10 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const expectedCompName2 = "charles leclerc";
+            const betName = "F1 2023 championship"
 
             //WHEN
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, expectedCompName2);
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, compName1, expectedCompName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const {compName2} = await betWaveOrganizer.betList(simpleBetAddress);
 
@@ -90,10 +94,11 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
+            const betName = "F1 2023 championship"
 
 
             //WHEN
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const {owner} = await betWaveOrganizer.betList(simpleBetAddress);
 
@@ -106,11 +111,12 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
+            const betName = "F1 2023 championship"
             const expectedBetStatus = 0n
 
 
             //WHEN
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const {betStatus} = await betWaveOrganizer.betList(simpleBetAddress);
 
@@ -138,7 +144,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1, user2} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
 
             //WHEN
@@ -151,7 +158,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             await betWaveOrganizer.connect(user1).startBetValidation(simpleBetAddress);
 
@@ -165,7 +173,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const expectedBetStatus = 1n
 
@@ -183,7 +192,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
 
             //WHEN
@@ -199,7 +209,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 0;
 
@@ -213,7 +224,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 2;
             await betWaveOrganizer.connect(user1).startBetValidation(simpleBetAddress)
@@ -228,7 +240,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1, user5} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 1;
             await betWaveOrganizer.connect(user1).startBetValidation(simpleBetAddress)
@@ -243,7 +256,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 0;
             const expectedCompVoteCount = 1;
@@ -262,7 +276,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 0;
             const expectedVoteCount = 1;
@@ -281,7 +296,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 0;
             const expectedValidatorsResult = 0;
@@ -300,7 +316,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 0;
             const validatorId = 0;
@@ -319,7 +336,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 1;
             const expectedCompVoteCount = 1;
@@ -338,7 +356,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 1;
             const expectedVoteCount = 1;
@@ -357,7 +376,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 1;
             const expectedValidatorsResult = 1;
@@ -376,7 +396,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
             const comp1 = "max verstappen";
             const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName, comp1, comp2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 1;
             const validatorId = 0;
@@ -390,36 +411,37 @@ describe("BetWaveOrganizer", () => {
             expect(validatorAddress).to.equals(user1.address);
         });
 
-       /* it("should set bet status to count time if validator number required is reached", async () => {
+        /* it("should set bet status to count time if validator number required is reached", async () => {
+             //GIVEN
+             const {betWaveOrganizer, betWaveDAO, user1, user2, user3, user4} = await loadFixture(deployFixture);
+             const compName1 = "max verstappen";
+             const compName2 = "charles leclerc";
+             await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
+             await user1.sendTransaction({to: await betWaveDAO.getAddress(), value: ethers.parseEther("10")});
+             await user1.sendTransaction({to: simpleBetAddress, value: ethers.parseEther("10")});
+             const expectedBetStatus = 2n
+             const compId = 1;
+             await betWaveOrganizer.connect(user1).startBetValidation(simpleBetAddress);
+
+             //WHEN
+             await betWaveOrganizer.connect(user1).setBetVote(compId, simpleBetAddress);
+             await betWaveOrganizer.connect(user2).setBetVote(compId, simpleBetAddress);
+             await betWaveOrganizer.connect(user3).setBetVote(compId, simpleBetAddress);
+             await betWaveOrganizer.connect(user4).setBetVote(compId, simpleBetAddress);
+             const {betStatus} = await betWaveOrganizer.betList(simpleBetAddress);
+
+             //THEN
+             expect(betStatus).to.equals(expectedBetStatus);
+         });*/
+
+        it("should emit start count event when validator number is reached", async () => {
             //GIVEN
             const {betWaveOrganizer, betWaveDAO, user1, user2, user3, user4} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
-            const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
-            await user1.sendTransaction({to: await betWaveDAO.getAddress(), value: ethers.parseEther("10")});
-            await user1.sendTransaction({to: simpleBetAddress, value: ethers.parseEther("10")});
-            const expectedBetStatus = 2n
-            const compId = 1;
-            await betWaveOrganizer.connect(user1).startBetValidation(simpleBetAddress);
-
-            //WHEN
-            await betWaveOrganizer.connect(user1).setBetVote(compId, simpleBetAddress);
-            await betWaveOrganizer.connect(user2).setBetVote(compId, simpleBetAddress);
-            await betWaveOrganizer.connect(user3).setBetVote(compId, simpleBetAddress);
-            await betWaveOrganizer.connect(user4).setBetVote(compId, simpleBetAddress);
-            const {betStatus} = await betWaveOrganizer.betList(simpleBetAddress);
-
-            //THEN
-            expect(betStatus).to.equals(expectedBetStatus);
-        });*/
-
-        it("should emit start count event when validator number is reached", async () => {
-            //GIVEN
-            const {betWaveOrganizer,betWaveDAO, user1, user2, user3, user4} = await loadFixture(deployFixture);
-            const compName1 = "max verstappen";
-            const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             await user1.sendTransaction({to: await betWaveDAO.getAddress(), value: ethers.parseEther("10")});
             const SimpleBet = await ethers.getContractFactory("SimpleBet");
@@ -441,39 +463,40 @@ describe("BetWaveOrganizer", () => {
     });
 
     describe("tallyVote", () => {
-       /* it("should fail if status is not count time", async () => {
-            //GIVEN
-            const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
-            const comp1 = "max verstappen";
-            const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
-            const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
-            const {owner} = await betWaveOrganizer.betList(simpleBetAddress);
+        /* it("should fail if status is not count time", async () => {
+             //GIVEN
+             const {betWaveOrganizer, user1} = await loadFixture(deployFixture);
+             const comp1 = "max verstappen";
+              const comp2 = "charles leclerc"; const betName = "F1 2023 championship"
+             await betWaveOrganizer.connect(user1).deployNewBet(betName,comp1, comp2);
+             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
+             const {owner} = await betWaveOrganizer.betList(simpleBetAddress);
 
-            //WHEN
-            //THEN
-            await expect(betWaveOrganizer.connect(user1).tallyVote(simpleBetAddress)).to.be.revertedWithCustomError(betWaveOrganizer, 'wrongStep');
-        });*/
+             //WHEN
+             //THEN
+             await expect(betWaveOrganizer.connect(user1).tallyVote(simpleBetAddress)).to.be.revertedWithCustomError(betWaveOrganizer, 'wrongStep');
+         });*/
 
-      /*  it("should fail if user is not the bet owner on tally vote", async () => {
-            //GIVEN
-            const {betWaveOrganizer, user1, user2} = await loadFixture(deployFixture);
-            const comp1 = "max verstappen";
-            const comp2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(comp1, comp2);
-            const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
+        /*  it("should fail if user is not the bet owner on tally vote", async () => {
+              //GIVEN
+              const {betWaveOrganizer, user1, user2} = await loadFixture(deployFixture);
+              const comp1 = "max verstappen";
+               const comp2 = "charles leclerc"; const betName = "F1 2023 championship"
+              await betWaveOrganizer.connect(user1).deployNewBet(betName,comp1, comp2);
+              const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
 
-            //WHEN
-            //THEN
-            await expect(betWaveOrganizer.connect(user2).tallyVote(simpleBetAddress)).to.be.revertedWithCustomError(betWaveOrganizer, 'notOwner');
-        });*/
+              //WHEN
+              //THEN
+              await expect(betWaveOrganizer.connect(user2).tallyVote(simpleBetAddress)).to.be.revertedWithCustomError(betWaveOrganizer, 'notOwner');
+          });*/
 
         it("should call sendPlatformAndCreatorFee and send fees to plateform with comp1 winner", async () => {
             //GIVEN
             const {betWaveOrganizer, betWaveDAO, user1, user2, user3, user4} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 0;
             const SimpleBet = await ethers.getContractFactory("SimpleBet");
@@ -508,7 +531,8 @@ describe("BetWaveOrganizer", () => {
             } = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user5).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user5).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 0;
             const SimpleBet = await ethers.getContractFactory("SimpleBet");
@@ -535,7 +559,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, betWaveDAO, user1, user2, user3, user4} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 1;
             const SimpleBet = await ethers.getContractFactory("SimpleBet");
@@ -563,7 +588,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1, user2, user3, user4} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 0;
             const SimpleBet = await ethers.getContractFactory("SimpleBet");
@@ -576,7 +602,7 @@ describe("BetWaveOrganizer", () => {
 
             //WHEN
             await betWaveOrganizer.connect(user4).setBetVote(compId, simpleBetAddress);
-           const expectedWinnerId = await simpleBet.winnerId();
+            const expectedWinnerId = await simpleBet.winnerId();
 
             //THEN
             expect(expectedWinnerId).to.equals(compId);
@@ -587,7 +613,8 @@ describe("BetWaveOrganizer", () => {
             const {betWaveOrganizer, user1, user2, user3, user4} = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user1).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user1).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 1;
             const SimpleBet = await ethers.getContractFactory("SimpleBet");
@@ -619,7 +646,8 @@ describe("BetWaveOrganizer", () => {
             } = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user5).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user5).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId = 1;
             const SimpleBet = await ethers.getContractFactory("SimpleBet");
@@ -655,7 +683,8 @@ describe("BetWaveOrganizer", () => {
             } = await loadFixture(deployFixture);
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user5).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user5).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId0 = 0;
             const compId1 = 1;
@@ -687,7 +716,8 @@ describe("BetWaveOrganizer", () => {
             //await betWaveDAO.connect(user5).addValidators({value: ethers.parseEther("1")});
             const compName1 = "max verstappen";
             const compName2 = "charles leclerc";
-            await betWaveOrganizer.connect(user5).deployNewBet(compName1, compName2);
+            const betName = "F1 2023 championship"
+            await betWaveOrganizer.connect(user5).deployNewBet(betName,compName1, compName2);
             const simpleBetAddress = await betWaveOrganizer.lastSimpleBetAddress();
             const compId0 = 0;
             const compId1 = 1;

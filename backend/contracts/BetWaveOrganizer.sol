@@ -1,26 +1,24 @@
+// SPDX-License-Identifier: MIT
+
 import "../contracts/SimpleBet.sol";
 import "../contracts/BetWaveDAO.sol";
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
+pragma solidity ^0.8.19;
 
     error noWinner();
     error notOwner();
     error wrongStep();
 
 contract BetWaveOrganizer {
-    string calledFallbackFun = "albatros";
 
     enum BetStatus {
         betTime,
         VoteTime,
-        //CountTime,
         VoteEnded
     }
 
     struct Bet {
+        string betName;
         string compName1;
         string compName2;
         address owner;
@@ -34,21 +32,13 @@ contract BetWaveOrganizer {
 
     mapping(address => Bet) public betList;
 
-    //address public betWaveDAOAddress;
 
     event newBet(address, string, string);
     event startValidation(address);
-    //event newUser(address, uint256);
     event startCount(address);
-    //event voteRejected(uint256);
 
     BetWaveDAO betWaveDAO;
-
     address public lastSimpleBetAddress;
-
-    uint public test1;
-    uint public test2;
-    uint public test3;
 
     modifier doesUserExist() {
         if (betWaveDAO.userToId(msg.sender) == 0)
@@ -89,7 +79,7 @@ contract BetWaveOrganizer {
 
     // GETTERS //
 
-    function deployNewBet(string memory _compName1, string memory _compName2)
+    function deployNewBet(string memory _betName, string memory _compName1, string memory _compName2)
     external
     doesUserExist
     {
@@ -99,11 +89,13 @@ contract BetWaveOrganizer {
         );
         address contractAddress = address(
             new SimpleBet(
+                _betName,
                 _compName1,
                 _compName2,
                 address(this),
                 address(betWaveDAO)));
         lastSimpleBetAddress = contractAddress;
+        betList[contractAddress].betName = _betName;
         betList[contractAddress].compName1 = _compName1;
         betList[contractAddress].compName2 = _compName2;
         betList[contractAddress].owner = msg.sender;
@@ -138,15 +130,12 @@ contract BetWaveOrganizer {
             betList[_betAddress].validatorList.push(msg.sender);
         }
         if (betList[_betAddress].voteCount >= betWaveDAO.validatorNumberRequired()) {
-            //betList[_betAddress].betStatus = BetStatus.CountTime;
             emit startCount(_betAddress);
             tallyVote(_betAddress);
         }
     }
 
     function tallyVote(address _betAddress) internal
-        //onlyOwner(_betAddress)
-        //isCorrectStep(BetStatus.CountTime, _betAddress)
     {
         if (
             betList[_betAddress].comp1VoteCount >
@@ -191,9 +180,7 @@ contract BetWaveOrganizer {
             betWaveDAO.platformFees(),
             betWaveDAO.creatorFees(),
             betList[_betAddress].owner);
-        test2 = address(SimpleBet(payable(_betAddress))).balance;
         uint256 rewardValidator = SimpleBet(payable(_betAddress)).calculateValidatorReward(betWaveDAO.validatorFees());
-        test1 = rewardValidator;
         for (
             uint256 i = 0;
             i < betList[_betAddress].validatorList.length;
@@ -209,25 +196,24 @@ contract BetWaveOrganizer {
                     rewardValidator
                 );
             } else {
-
-                // betWaveDAO.validators[betList[_betAddress].validatorList[i]].strike++;
+                //betWaveDAO.validators[betList[_betAddress].validatorList[i]].strike++;
             }
         }
         SimpleBet(payable(_betAddress)).setFeesBooleanToTrue();
     }
 
-    function sendEther(address _to, uint256 _amount) internal {
-        (bool sent, bytes memory received) = payable(_to).call{value : _amount}(
-            ""
-        );
-        require(sent, "Failed to send Ether");
-    }
+    /*    function sendEther(address _to, uint256 _amount) internal {
+            (bool sent, bytes memory received) = payable(_to).call{value : _amount}(
+                ""
+            );
+            require(sent, "Failed to send Ether");
+        }
 
-    receive() external payable {
-        require(msg.value >= 5 * 1e4 wei, "you can't send less than 50k wei");
-    }
+        receive() external payable {
+            require(msg.value >= 5 * 1e4 wei, "you can't send less than 50k wei");
+        }
 
-    fallback() external payable {
-        calledFallbackFun = "Fallback function is executed!";
-    }
+        fallback() external payable {
+            require(msg.data.length == 0, "No fallback desired");
+        }*/
 }
