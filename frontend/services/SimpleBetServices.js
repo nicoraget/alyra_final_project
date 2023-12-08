@@ -3,14 +3,14 @@ import {simpleBet} from "@/constants/SimpleBet";
 import {getWalletClient, prepareWriteContract, writeContract} from "@wagmi/core";
 import {parseEther} from "viem";
 
-export const deploySimpleBet = async () => {
+export const deploySimpleBet = async (betName,competitor1,competitor2) => {
     try {
         const walletClient = await getWalletClient();
         const {request} = await prepareWriteContract({
             address: betWaveOrganizer.address,
             abi: betWaveOrganizer.abi,
             account: walletClient?.account,
-            args: [competitor1, competitor2],
+            args: [betName,competitor1, competitor2],
             functionName: "deployNewBet",
         });
         const {hash} = await writeContract(request)

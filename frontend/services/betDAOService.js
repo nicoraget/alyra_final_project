@@ -2,24 +2,28 @@ import {getWalletClient, prepareWriteContract, readContract, writeContract} from
 import {betWaveDAO} from "@/constants/BetWaveDAO";
 import {parseEther} from "viem";
 
-export const isUserExist = async() => {
-            const walletClient = await getWalletClient();
-    return await readContract({
-               address: betWaveDAO.address,
-               abi: betWaveDAO.abi,
-               args: [walletClient?.account.address],
-               functionName: "userToId",
-           });
+export const isUserExist = async () => {
+    const walletClient = await getWalletClient();
+    if (walletClient !== null) {
+        return await readContract({
+            address: betWaveDAO.address,
+            abi: betWaveDAO.abi,
+            args: [walletClient?.account.address],
+            functionName: "userToId",
+        });
+    } else {
+        return 0n;
+    }
 }
 
-export const getDAOControlValue = async() => {
+export const getDAOControlValue = async () => {
     const rawValue = await readContract({
         address: betWaveDAO.address,
         abi: betWaveDAO.abi,
         functionName: "getDaoControlValue",
     });
     return {
-        validatorNumberRequired:rawValue[0],
+        validatorNumberRequired: rawValue[0],
         platformFees: rawValue[1],
         creatorFees: rawValue[2],
         betQuorum: rawValue[3],
@@ -45,14 +49,14 @@ export const addValidator = async () => {
     }
 }
 
-export const askDaoVote = async (voteType,newValue) => {
+export const askDaoVote = async (voteType, newValue) => {
     try {
         const walletClient = await getWalletClient();
         const {request} = await prepareWriteContract({
             address: betWaveDAO.address,
             abi: betWaveDAO.abi,
             account: walletClient?.account,
-            args:[voteType,newValue],
+            args: [voteType, newValue],
             functionName: "askDAOVote",
         });
         const {hash} = await writeContract(request)

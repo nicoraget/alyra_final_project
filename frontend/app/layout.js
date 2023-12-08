@@ -5,10 +5,15 @@ import {Providers} from "@/app/provider";
 
 
 export default function RootLayout({children}) {
+
+    const heightStyle = {
+        height: '100vh',
+    }
+
     return (
-        <html lang="en">
-        <body>
-        <Providers>
+        <html lang="en" style={heightStyle}>
+        <body style={heightStyle}>
+        <Providers style={heightStyle}>
             <Layout>
                 {children}
             </Layout>

@@ -4,6 +4,11 @@ export const betWaveDAO = {
     abi: [
         {
             "inputs": [],
+            "name": "ReentrancyGuardReentrantCall",
+            "type": "error"
+        },
+        {
+            "inputs": [],
             "name": "insufficientBalance",
             "type": "error"
         },
@@ -16,6 +21,25 @@ export const betWaveDAO = {
             "inputs": [],
             "name": "notValidator",
             "type": "error"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "enum BetWaveDAO.VoteType",
+                    "name": "",
+                    "type": "uint8"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "newDAOVote",
+            "type": "event"
         },
         {
             "anonymous": false,
@@ -41,12 +65,69 @@ export const betWaveDAO = {
             "inputs": [
                 {
                     "indexed": false,
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "name": "newValidator",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "setDAOVote",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
                     "internalType": "uint256",
                     "name": "",
                     "type": "uint256"
                 }
             ],
             "name": "voteRejected",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "withdrawValidator",
             "type": "event"
         },
         {
@@ -58,9 +139,9 @@ export const betWaveDAO = {
             "name": "DAOQuorum",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint8",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint8"
                 }
             ],
             "stateMutability": "view",
@@ -69,9 +150,9 @@ export const betWaveDAO = {
         {
             "inputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint64",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint64"
                 }
             ],
             "name": "DAOVoteList",
@@ -92,9 +173,9 @@ export const betWaveDAO = {
                     "type": "uint256"
                 },
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint8",
                     "name": "newValue",
-                    "type": "uint256"
+                    "type": "uint8"
                 }
             ],
             "stateMutability": "view",
@@ -122,9 +203,9 @@ export const betWaveDAO = {
                     "type": "uint8"
                 },
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint8",
                     "name": "_newValue",
-                    "type": "uint256"
+                    "type": "uint8"
                 }
             ],
             "name": "askDAOVote",
@@ -137,9 +218,9 @@ export const betWaveDAO = {
             "name": "betQuorum",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint8",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint8"
                 }
             ],
             "stateMutability": "view",
@@ -150,9 +231,9 @@ export const betWaveDAO = {
             "name": "creatorFees",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint8",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint8"
                 }
             ],
             "stateMutability": "view",
@@ -163,9 +244,9 @@ export const betWaveDAO = {
             "name": "daoVoteNumber",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint64",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint64"
                 }
             ],
             "stateMutability": "view",
@@ -212,9 +293,9 @@ export const betWaveDAO = {
         {
             "inputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint64",
                     "name": "_id",
-                    "type": "uint256"
+                    "type": "uint64"
                 }
             ],
             "name": "getDaoVoteHasVoted",
@@ -233,9 +314,9 @@ export const betWaveDAO = {
             "name": "platformFees",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint8",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint8"
                 }
             ],
             "stateMutability": "view",
@@ -244,14 +325,14 @@ export const betWaveDAO = {
         {
             "inputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint64",
                     "name": "_id",
-                    "type": "uint256"
+                    "type": "uint64"
                 },
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint8",
                     "name": "_option",
-                    "type": "uint256"
+                    "type": "uint8"
                 }
             ],
             "name": "setDaoVote",
@@ -262,9 +343,9 @@ export const betWaveDAO = {
         {
             "inputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint64",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint64"
                 }
             ],
             "name": "userList",
@@ -283,9 +364,9 @@ export const betWaveDAO = {
             "name": "userNumber",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint64",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint64"
                 }
             ],
             "stateMutability": "view",
@@ -302,9 +383,9 @@ export const betWaveDAO = {
             "name": "userToId",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint64",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint64"
                 }
             ],
             "stateMutability": "view",
@@ -315,9 +396,9 @@ export const betWaveDAO = {
             "name": "validatorFees",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint8",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint8"
                 }
             ],
             "stateMutability": "view",
@@ -328,9 +409,9 @@ export const betWaveDAO = {
             "name": "validatorNumber",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint16",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint16"
                 }
             ],
             "stateMutability": "view",
@@ -341,9 +422,9 @@ export const betWaveDAO = {
             "name": "validatorNumberRequired",
             "outputs": [
                 {
-                    "internalType": "uint256",
+                    "internalType": "uint16",
                     "name": "",
-                    "type": "uint256"
+                    "type": "uint16"
                 }
             ],
             "stateMutability": "view",

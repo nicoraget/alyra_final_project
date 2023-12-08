@@ -14,6 +14,10 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "ReentrancyGuard",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ReentrancyGuard__factory>;
+    getContractFactory(
       name: "BetWaveDAO",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BetWaveDAO__factory>;
@@ -27,6 +31,11 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.SimpleBet__factory>;
 
     getContractAt(
+      name: "ReentrancyGuard",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ReentrancyGuard>;
+    getContractAt(
       name: "BetWaveDAO",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -43,6 +52,10 @@ declare module "hardhat/types/runtime" {
     ): Promise<Contracts.SimpleBet>;
 
     deployContract(
+      name: "ReentrancyGuard",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ReentrancyGuard>;
+    deployContract(
       name: "BetWaveDAO",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.BetWaveDAO>;
@@ -55,6 +68,11 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.SimpleBet>;
 
+    deployContract(
+      name: "ReentrancyGuard",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.ReentrancyGuard>;
     deployContract(
       name: "BetWaveDAO",
       args: any[],

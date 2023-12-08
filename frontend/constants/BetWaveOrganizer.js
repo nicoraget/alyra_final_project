@@ -90,10 +90,6 @@ export const betWaveOrganizer = {
            "type": "event"
        },
        {
-           "stateMutability": "payable",
-           "type": "fallback"
-       },
-       {
            "inputs": [
                {
                    "internalType": "address",
@@ -103,6 +99,11 @@ export const betWaveOrganizer = {
            ],
            "name": "betList",
            "outputs": [
+               {
+                   "internalType": "string",
+                   "name": "betName",
+                   "type": "string"
+               },
                {
                    "internalType": "string",
                    "name": "compName1",
@@ -144,6 +145,11 @@ export const betWaveOrganizer = {
        },
        {
            "inputs": [
+               {
+                   "internalType": "string",
+                   "name": "_betName",
+                   "type": "string"
+               },
                {
                    "internalType": "string",
                    "name": "_compName1",
@@ -246,49 +252,6 @@ export const betWaveOrganizer = {
            "outputs": [],
            "stateMutability": "nonpayable",
            "type": "function"
-       },
-       {
-           "inputs": [],
-           "name": "test1",
-           "outputs": [
-               {
-                   "internalType": "uint256",
-                   "name": "",
-                   "type": "uint256"
-               }
-           ],
-           "stateMutability": "view",
-           "type": "function"
-       },
-       {
-           "inputs": [],
-           "name": "test2",
-           "outputs": [
-               {
-                   "internalType": "uint256",
-                   "name": "",
-                   "type": "uint256"
-               }
-           ],
-           "stateMutability": "view",
-           "type": "function"
-       },
-       {
-           "inputs": [],
-           "name": "test3",
-           "outputs": [
-               {
-                   "internalType": "uint256",
-                   "name": "",
-                   "type": "uint256"
-               }
-           ],
-           "stateMutability": "view",
-           "type": "function"
-       },
-       {
-           "stateMutability": "payable",
-           "type": "receive"
        }
 ],
 }

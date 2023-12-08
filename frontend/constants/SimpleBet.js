@@ -4,6 +4,11 @@ export const simpleBet = {
             "inputs": [
                 {
                     "internalType": "string",
+                    "name": "_betName",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
                     "name": "_compName1",
                     "type": "string"
                 },
@@ -25,6 +30,11 @@ export const simpleBet = {
             ],
             "stateMutability": "payable",
             "type": "constructor"
+        },
+        {
+            "inputs": [],
+            "name": "ReentrancyGuardReentrantCall",
+            "type": "error"
         },
         {
             "inputs": [],
@@ -124,6 +134,19 @@ export const simpleBet = {
         },
         {
             "inputs": [],
+            "name": "betName",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
             "name": "betWaveDaoAddress",
             "outputs": [
                 {
@@ -198,7 +221,7 @@ export const simpleBet = {
                     "type": "uint256"
                 }
             ],
-            "stateMutability": "nonpayable",
+            "stateMutability": "view",
             "type": "function"
         },
         {
@@ -238,19 +261,6 @@ export const simpleBet = {
         {
             "inputs": [],
             "name": "endEventTimestamp",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "getContractBalance",
             "outputs": [
                 {
                     "internalType": "uint256",
@@ -340,19 +350,6 @@ export const simpleBet = {
             "name": "setWinnerId",
             "outputs": [],
             "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "test",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
             "type": "function"
         },
         {

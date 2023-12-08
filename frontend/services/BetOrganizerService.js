@@ -9,10 +9,11 @@ export const getBetFromBetOrganizer = async (betAddress) => {
         functionName: "betList",
     });
     return {
-        competitor1: bet[0],
-        competitor2: bet[1],
-        owner: bet[2],
-        betStatus: bet[6]
+        betName:bet[0],
+        competitor1: bet[1],
+        competitor2: bet[2],
+        owner: bet[3],
+        betStatus: bet[7]
     }
 }
 

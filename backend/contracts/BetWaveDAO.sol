@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 pragma solidity ^0.8.21;
 
@@ -6,19 +7,17 @@ pragma solidity ^0.8.21;
     error notRegistered();
     error insufficientBalance();
 
-contract BetWaveDAO {
+contract BetWaveDAO is ReentrancyGuard {
 
-    string calledFallbackFun = "efblvqhsbdlg";
-
-    uint256 public validatorNumberRequired = 4;
-    uint256 public platformFees = 150;
-    uint256 public creatorFees = 50;
-    uint256 public betQuorum = 75;
-    uint256 public DAOQuorum = 75;
-    uint256 public validatorFees = 10;
-    uint256 public userNumber = 1;
-    uint256 public validatorNumber;
-    uint256  public daoVoteNumber;
+    uint8 public platformFees = 150;
+    uint8 public creatorFees = 50;
+    uint8 public betQuorum = 75;
+    uint8 public DAOQuorum = 75;
+    uint8 public validatorFees = 10;
+    uint16 public validatorNumberRequired = 4;
+    uint16 public validatorNumber;
+    uint64 public userNumber = 1;
+    uint64 public daoVoteNumber;
 
     enum VoteType {
         PlatformFee,
@@ -33,7 +32,7 @@ contract BetWaveDAO {
         VoteType voteType;
         uint256 voteFor;
         uint256 voteAgainst;
-        uint256 newValue;
+        uint8 newValue;
         mapping(address => bool) hasVoted;
     }
 
@@ -43,14 +42,18 @@ contract BetWaveDAO {
         uint256 strike;
     }
 
-    mapping(uint256 => DAOVote) public DAOVoteList;
+    mapping(uint64 => DAOVote) public DAOVoteList;
     mapping(address => User) public validators;
-    mapping(uint256 => address) public userList;
-    mapping(address => uint256) public userToId;
+    mapping(uint64 => address) public userList;
+    mapping(address => uint64) public userToId;
 
 
     event voteRejected(uint256);
     event newUser(address, uint256);
+    event newValidator(address);
+    event newDAOVote(VoteType, uint);
+    event setDAOVote(address, uint, uint);
+    event withdrawValidator(address,uint);
 
     modifier onlyValidator() {
         if (validators[msg.sender].userAddress != msg.sender)
@@ -71,12 +74,12 @@ contract BetWaveDAO {
     }
 
     // GETTERS //
-    function getDaoVoteHasVoted(uint _id) external view returns (bool){
+    function getDaoVoteHasVoted(uint64 _id) external view returns (bool){
         return DAOVoteList[_id].hasVoted[msg.sender];
     }
 
-    function getDaoControlValue() external view returns(uint,uint,uint,uint,uint,uint) {
-        return (validatorNumberRequired,platformFees,creatorFees,betQuorum,DAOQuorum,validatorFees);
+    function getDaoControlValue() external view returns (uint, uint, uint, uint, uint, uint) {
+        return (validatorNumberRequired, platformFees, creatorFees, betQuorum, DAOQuorum, validatorFees);
     }
 
     // GETTERS //
@@ -89,7 +92,7 @@ contract BetWaveDAO {
     }
 
     function addValidators() public payable doesUserExist hasBalance(msg.sender) {
-        require(msg.value == 1 ether, "send 1 eth");
+        require(msg.value >= 1 ether, "send 1 eth");
         require(
             validators[msg.sender].userAddress != msg.sender,
             "You already are"
@@ -97,17 +100,19 @@ contract BetWaveDAO {
         sendEther(address(this), msg.value);
         validators[msg.sender].userAddress = payable(msg.sender);
         validatorNumber++;
+        emit newValidator(msg.sender);
     }
 
-    function askDAOVote(VoteType _voteType, uint256 _newValue)
+    function askDAOVote(VoteType _voteType, uint8 _newValue)
     public
     onlyValidator
     {
         DAOVoteList[daoVoteNumber].voteType = _voteType;
         DAOVoteList[daoVoteNumber++].newValue = _newValue;
+        emit newDAOVote(_voteType, _newValue);
     }
 
-    function setDaoVote(uint256 _id, uint256 _option) public onlyValidator {
+    function setDaoVote(uint64 _id, uint8 _option) public onlyValidator {
         require(DAOVoteList[_id].hasVoted[msg.sender] == false, "already voted");
         if (_option == 1) {
             DAOVoteList[_id].voteFor++;
@@ -115,6 +120,7 @@ contract BetWaveDAO {
             DAOVoteList[_id].voteAgainst++;
         }
         DAOVoteList[_id].hasVoted[msg.sender] = true;
+        emit setDAOVote(msg.sender, _id, _option);
         if (((DAOVoteList[_id].voteFor * 100) / validatorNumber) >= DAOQuorum) {
             switchVoteType(
                 DAOVoteList[_id].voteType,
@@ -128,7 +134,9 @@ contract BetWaveDAO {
         }
     }
 
-    function withdrawFromValidators() public payable hasBalance(address(this)) {
+    function withdrawFromValidators() external payable
+    nonReentrant
+    hasBalance(address(this)) {
         require(
             validators[msg.sender].userAddress == msg.sender,
             "You are not validators"
@@ -137,9 +145,10 @@ contract BetWaveDAO {
         sendEther(msg.sender, amount);
         validators[msg.sender].userAddress = payable(0);
         validatorNumber--;
+    emit withdrawValidator(msg.sender,validatorNumber);
     }
 
-    function switchVoteType(VoteType _voteType, uint256 _newValue) internal {
+    function switchVoteType(VoteType _voteType, uint8 _newValue) internal {
         if (_voteType == VoteType.PlatformFee) {
             platformFees = _newValue;
         } else if (_voteType == VoteType.CreatorFees) {
@@ -156,7 +165,7 @@ contract BetWaveDAO {
     }
 
     function sendEther(address _to, uint256 _amount) internal {
-        (bool sent, bytes memory received) = payable(_to).call{value : _amount}(
+        (bool sent,bytes memory received) = payable(_to).call{value : _amount}(
             ""
         );
         require(sent, "Failed to send Ether");
@@ -167,7 +176,7 @@ contract BetWaveDAO {
     }
 
     fallback() external payable {
-        calledFallbackFun = "Fallback function is executed!";
+        require(msg.data.length == 0, "No fallback desired");
     }
 
 }

@@ -2,11 +2,9 @@
 
 import "../contracts/BetWaveOrganizer.sol";
 import "../contracts/BetWaveDAO.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 pragma solidity ^0.8.19;
-
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
 
     error minimumBetAmount();
     error alreadyBet();
@@ -15,11 +13,9 @@ pragma solidity ^0.8.19;
     error feesNotPaid();
     error forbidden();
 
-contract SimpleBet {
-    string calledFallbackFun;
+contract SimpleBet is ReentrancyGuard{
 
-    //name of the bet
-    string betName;
+    string public betName;
 
     struct Competitor {
         string name;
@@ -56,22 +52,18 @@ contract SimpleBet {
     address public betWaveDaoAddress;
     bool hasFeesBeenPaid;
 
-    uint public test;
-
     event newBid(address,uint,uint,uint,uint,uint,uint);
 
     constructor(
+    string memory _betName,
         string memory _compName1,
         string memory _compName2,
-    // uint256 _beginEventTimestamp,
-    // uint256 _endEventTimestamp,
         address _betWavesOrganizerAddress,
         address _betWaveDaoAddress
     ) payable {
         betWaveOrganizer = BetWaveOrganizer(payable(_betWavesOrganizerAddress));
         betWaveDAO = BetWaveDAO(payable(_betWaveDaoAddress));
-        //beginEventTimestamp = _beginEventTimestamp;
-        // endEventTimestamp = _endEventTimestamp;
+        betName = _betName;
         competitors[0].name = _compName1;
         competitors[1].name = _compName2;
         betWavesOrganizerAddress = _betWavesOrganizerAddress;
@@ -130,6 +122,7 @@ contract SimpleBet {
     function setBet(uint256 _betId)
     external
     payable
+    nonReentrant
     hasAmountBettor
     hasMinimumAmount
     hasAlreadyBet
@@ -156,10 +149,13 @@ contract SimpleBet {
     function sendPlatfromAndCreatorFees(
         uint256 _plateformeFees,
         uint256 _creatorFees,
-        address _ownerAddress//hasEventEnded
-    ) public hasAmountContract isAuthorized {
+        address _ownerAddress
+    ) public
+    nonReentrant
+    hasAmountContract
+    isAuthorized {
         require(!hasFeesBeenPaid, "fee already paid");
-        uint256 contractBalanceSnapshot = getContractBalance();
+        uint256 contractBalanceSnapshot = address(this).balance;
         uint256 amountToSendToPlaterform = contractBalanceSnapshot /
         _plateformeFees;
         uint256 amountToSendToOwner = contractBalanceSnapshot / _creatorFees;
@@ -169,7 +165,7 @@ contract SimpleBet {
 
     function calculateValidatorReward(uint _validatorFees)
     public
-    //view
+    view
     hasAmountContract
     isAuthorized returns (uint)
     {
@@ -178,11 +174,11 @@ contract SimpleBet {
 
     function sendValidatorFees(address _validatorAddress, uint256 _validatorReward)
     public
+    nonReentrant
     isAuthorized
     hasAmountContract
     {
         sendEther(_validatorAddress, _validatorReward);
-        test = 2;
     }
 
     function setFeesBooleanToTrue() public isAuthorized {
@@ -191,7 +187,9 @@ contract SimpleBet {
     }
 
     // on the first time, user have to call to redeem money. that way we dont parse a potentially big array
-    function redeemToBettor() public payable hasAllFeesBeenPaid {
+    function redeemToBettor() public payable
+    nonReentrant
+    hasAllFeesBeenPaid {
         require(hasFeesBeenPaid, "pay platform fee first");
         require(bettors[msg.sender].betId == winnerId, "no gain");
         bettors[msg.sender].bettingReward =
@@ -224,19 +222,12 @@ contract SimpleBet {
         require(sent, "Failed to send Ether");
     }
 
-    ////////////////// test function
-    function getContractBalance() public view returns (uint256) {
-        return address(this).balance;
-    }
-
-    //////////////////// test function
-
     receive() external payable hasMinimumAmount {
         require(msg.value >= 5 * 1e4 wei, "you can't send less than 50k wei");
     }
 
     fallback() external payable {
-        calledFallbackFun = "Fallback function is executed!";
+        require(msg.data.length == 0, "No fallback desired");
     }
 }
 
