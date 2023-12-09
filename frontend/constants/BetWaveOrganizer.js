@@ -1,5 +1,5 @@
 export const betWaveOrganizer = {
-    address: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
+    address: '0x71C5d231A1685ff5233EC5908F57b73665e4f891',
     blockNumber: 1,
    abi : [
        {
