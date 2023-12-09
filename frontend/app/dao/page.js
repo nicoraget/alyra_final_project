@@ -24,7 +24,7 @@ import {AskDAOVote} from "@/components/Modal/AskDAOVote";
 import {SetNewBet} from "@/services/SimpleBetServices";
 import {useAccount} from "wagmi";
 
-const validator = () => {
+const Validator = () => {
 
     const [daoControlValue, setdaoControlValue] = useState([]);
     const [daoVoteList, setDaoVoteList] = useState([]);

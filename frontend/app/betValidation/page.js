@@ -24,7 +24,7 @@ import {
 import {useAccount, usePublicClient} from "wagmi";
 import {getIsValidator} from "@/services/betDAOService";
 
-const bet = () => {
+const Bet = () => {
 
     const publicClient = usePublicClient();
     const [betListToValidate, setBetListToValidate] = useState([])
