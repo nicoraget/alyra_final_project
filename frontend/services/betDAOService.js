@@ -103,7 +103,7 @@ export const addValidator = async () => {
         const {hash} = await writeContract(request)
         console.log(hash)
     } catch (error) {
-        console.log(error)
+        throw error;
     }
 }
 
@@ -122,7 +122,7 @@ export const setDaoVote = async (id,option) => {
         const {hash} = await writeContract(request)
         console.log(hash)
     } catch (error) {
-        console.log(error)
+        throw error;
     }
 }
 
@@ -141,7 +141,7 @@ export const askDaoVote = async (voteType, newValue) => {
         const {hash} = await writeContract(request)
         console.log(hash)
     } catch (error) {
-        console.log(error)
+        throw error;
     }
 }
 
@@ -157,6 +157,6 @@ export const withdrawFromValidator = async () => {
         const {hash} = await writeContract(request)
         console.log(hash)
     } catch (error) {
-        console.log(error)
+        throw error;
     }
 }

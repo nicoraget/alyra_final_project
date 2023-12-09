@@ -17,7 +17,7 @@ export const deploySimpleBet = async (betName,competitor1,competitor2) => {
         const {hash} = await writeContract(request)
         console.log(hash)
     } catch (error) {
-        console.log(error)
+        throw error;
     }
 }
 
@@ -33,7 +33,7 @@ export const redeemGain = async (address) => {
         const {hash} = await writeContract(request)
         console.log(hash)
     } catch (error) {
-        console.log(error)
+       throw error;
     }
 }
 
@@ -55,7 +55,7 @@ export const SetNewBet = async (address, betId, value) => {
         const {hash} = await writeContract(request)
         console.log(hash)
     } catch (error) {
-        console.log(error)
+        throw error;
     }
 }
 

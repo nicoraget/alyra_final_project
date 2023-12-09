@@ -118,6 +118,10 @@ contract BetWaveOrganizer {
         (address userAddress, ,) = betWaveDAO.validators(msg.sender);
         if (userAddress != msg.sender) revert notValidator();
 
+        for(uint i=0; i< betList[_betAddress].validatorList.length; i++){
+            require(betList[_betAddress].validatorList[i] != msg.sender,"already voted");
+        }
+
         if (_compId == 0) {
             betList[_betAddress].comp1VoteCount++;
             betList[_betAddress].voteCount++;
