@@ -107,18 +107,6 @@ contract SimpleBet is ReentrancyGuard{
         _;
     }
 
-    modifier hasEventStarted() {
-        if (block.timestamp >= beginEventTimestamp)
-            revert eventAlreadyStarted();
-        _;
-    }
-
-    modifier hasEventEnded() {
-        if (block.timestamp >= endEventTimestamp) revert eventNotEnded();
-        _;
-    }
-
-
     function setBet(uint256 _betId)
     external
     payable
@@ -186,16 +174,18 @@ contract SimpleBet is ReentrancyGuard{
         winningCoefficientCalculator();
     }
 
-    // on the first time, user have to call to redeem money. that way we dont parse a potentially big array
     function redeemToBettor() public payable
     nonReentrant
     hasAllFeesBeenPaid {
+        require(bettors[msg.sender].bettorAddress == msg.sender,"You don't participate");
         require(hasFeesBeenPaid, "pay platform fee first");
         require(bettors[msg.sender].betId == winnerId, "no gain");
         bettors[msg.sender].bettingReward =
         (bettors[msg.sender].bettingAmout * winningCoefficient) /
         100;
-        sendEther(msg.sender, bettors[msg.sender].bettingReward);
+        uint amountToSend = bettors[msg.sender].bettingReward;
+        bettors[msg.sender].bettingReward = 0;
+        sendEther(msg.sender, amountToSend);
     }
 
     function winningCoefficientCalculator() internal hasAllFeesBeenPaid {

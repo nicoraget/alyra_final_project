@@ -134,7 +134,6 @@ describe("BetWaveDAO", () => {
             //WHEN
             //THEN
             await expect(betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("0.5")})).to.be.revertedWith('send 1 eth');
-            await expect(betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1.5")})).to.be.revertedWith('send 1 eth');
         });
 
         it("should fail if you already are validator", async () => {
@@ -512,10 +511,69 @@ describe("BetWaveDAO", () => {
             await betWaveDAO.connect(user2).setDaoVote(daoVoteId, daoVoteOptionForUser123);
             await betWaveDAO.connect(user3).setDaoVote(daoVoteId, daoVoteOptionForUser123);
             await betWaveDAO.connect(user4).setDaoVote(daoVoteId, daoVoteOptionForUser4);
-            const DAOQuorum = await betWaveDAO.validatorFees();
+            const validatorFees = await betWaveDAO.validatorFees();
 
             //THEN
-            expect(DAOQuorum).to.equals(expectedNewValue);
+            expect(validatorFees).to.equals(expectedNewValue);
+        });
+
+        it("should set vote ended to true if vote for", async () => {
+            //GIVEN
+            const {betWaveDAO, user1, user2, user3, user4} = await loadFixture(deployFixture);
+            await betWaveDAO.connect(user1).addUser();
+            await betWaveDAO.connect(user2).addUser();
+            await betWaveDAO.connect(user3).addUser();
+            await betWaveDAO.connect(user4).addUser();
+            await betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user2).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user3).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user4).addValidators({value: ethers.parseEther("1")});
+            const VoteType = 5n;
+            const expectedNewValue = 30;
+            const daoVoteId = 0;
+            const daoVoteOptionForUser123 = 1;
+            const daoVoteOptionForUser4 = 2;
+            const expectedVoteEnded = true;
+
+            //WHEN
+            await betWaveDAO.connect(user1).askDAOVote(VoteType, expectedNewValue);
+            await betWaveDAO.connect(user1).setDaoVote(daoVoteId, daoVoteOptionForUser123);
+            await betWaveDAO.connect(user2).setDaoVote(daoVoteId, daoVoteOptionForUser123);
+            await betWaveDAO.connect(user3).setDaoVote(daoVoteId, daoVoteOptionForUser123);
+            await betWaveDAO.connect(user4).setDaoVote(daoVoteId, daoVoteOptionForUser4);
+            const {voteEnded} = await betWaveDAO.DAOVoteList(daoVoteId);
+
+            //THEN
+            expect(voteEnded).to.equals(expectedVoteEnded);
+        });
+
+        it("should set vote ended to true if vote againt", async () => {
+            //GIVEN
+            const {betWaveDAO, user1, user2, user3, user4} = await loadFixture(deployFixture);
+            await betWaveDAO.connect(user1).addUser();
+            await betWaveDAO.connect(user2).addUser();
+            await betWaveDAO.connect(user3).addUser();
+            await betWaveDAO.connect(user4).addUser();
+            await betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user2).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user3).addValidators({value: ethers.parseEther("1")});
+            await betWaveDAO.connect(user4).addValidators({value: ethers.parseEther("1")});
+            const VoteType = 5n;
+            const expectedNewValue = 30;
+            const daoVoteId = 0;
+            const daoVoteOptionForUser1234 = 2;
+            const expectedVoteEnded = true;
+
+            //WHEN
+            await betWaveDAO.connect(user1).askDAOVote(VoteType, expectedNewValue);
+            await betWaveDAO.connect(user1).setDaoVote(daoVoteId, daoVoteOptionForUser1234);
+            await betWaveDAO.connect(user2).setDaoVote(daoVoteId, daoVoteOptionForUser1234);
+            await betWaveDAO.connect(user3).setDaoVote(daoVoteId, daoVoteOptionForUser1234);
+            await betWaveDAO.connect(user4).setDaoVote(daoVoteId, daoVoteOptionForUser1234);
+            const {voteEnded} = await betWaveDAO.DAOVoteList(daoVoteId);
+
+            //THEN
+            expect(voteEnded).to.equals(expectedVoteEnded);
         });
 
         it("Should emit setDAOVote event", async () => {

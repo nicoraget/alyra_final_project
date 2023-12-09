@@ -7,33 +7,58 @@ import {
     ModalContent, ModalFooter,
     ModalHeader,
     ModalOverlay, Text,
-    useDisclosure
+    useDisclosure, useToast
 } from "@chakra-ui/react";
 import {useState} from "react";
 import {getWalletClient, prepareWriteContract, readContract, writeContract} from "@wagmi/core";
 import {useAccount} from "wagmi";
 import {betWaveOrganizer, BetWaveOrganizerAbi, BetWaveOrganizerAddress} from "@/constants/BetWaveOrganizer";
 import {deploySimpleBet} from "@/services/SimpleBetServices";
+import {addUser} from "@/services/betDAOService";
+import {BetList} from "@/components/BetList/BetList";
+import {deployNewBet} from "@/app/page";
 
-export const AddSimpleBetModal = () => {
+export const AddSimpleBetModal = (isLoading) => {
 
     const {isOpen, onOpen, onClose} = useDisclosure()
     const [competitor1, setCompetitor1] = useState('');
     const [competitor2, setCompetitor2] = useState('');
     const [betName, setBetName] = useState('');
+    const toast = useToast();
+    const [isloading, setIsloading] = useState(false);
 
     const modalButton = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: '1rem',
+        padding: '1rem 0 1rem 0',
     }
 
     const buttonStyle = {
         boxShadow: '2px 1px 1px #001233',
         borderRadius: '10px',
         color: '#FF595A',
-        background: '#001233'
+        background: '#001233',
+    }
+
+    const saveAndClose = async (betName, competitor1, competitor2) => {
+        try {
+            setIsloading(true);
+            await deploySimpleBet(betName, competitor1, competitor2);
+            setIsloading(false);
+            toast({
+                title: "New Bet Deployed ",
+                status: "success",
+            });
+            onClose();
+        } catch (error) {
+            setIsloading(false);
+            toast({
+                title: error.name,
+                description: error.shortMessage,
+                status: "error",
+            });
+        }
     }
 
     return (
@@ -69,8 +94,9 @@ export const AddSimpleBetModal = () => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={()=> deploySimpleBet(betName,competitor1,competitor2)}>
-                            Save
+                        <Button colorScheme='blue' mr={3}
+                                onClick={() => saveAndClose(betName, competitor1, competitor2)} isLoading={isloading}>
+                            Create
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>

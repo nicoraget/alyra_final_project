@@ -314,11 +314,12 @@ export interface BetWaveDAO extends BaseContract {
   DAOVoteList: TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [bigint, bigint, bigint, bigint] & {
+      [bigint, bigint, bigint, bigint, boolean] & {
         voteType: bigint;
         voteFor: bigint;
         voteAgainst: bigint;
         newValue: bigint;
+        voteEnded: boolean;
       }
     ],
     "view"
@@ -398,11 +399,12 @@ export interface BetWaveDAO extends BaseContract {
   ): TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [bigint, bigint, bigint, bigint] & {
+      [bigint, bigint, bigint, bigint, boolean] & {
         voteType: bigint;
         voteFor: bigint;
         voteAgainst: bigint;
         newValue: bigint;
+        voteEnded: boolean;
       }
     ],
     "view"

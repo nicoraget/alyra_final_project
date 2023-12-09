@@ -201,19 +201,4 @@ contract BetWaveOrganizer {
         }
         SimpleBet(payable(_betAddress)).setFeesBooleanToTrue();
     }
-
-    /*    function sendEther(address _to, uint256 _amount) internal {
-            (bool sent, bytes memory received) = payable(_to).call{value : _amount}(
-                ""
-            );
-            require(sent, "Failed to send Ether");
-        }
-
-        receive() external payable {
-            require(msg.value >= 5 * 1e4 wei, "you can't send less than 50k wei");
-        }
-
-        fallback() external payable {
-            require(msg.data.length == 0, "No fallback desired");
-        }*/
 }

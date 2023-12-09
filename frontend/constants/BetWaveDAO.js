@@ -176,6 +176,11 @@ export const betWaveDAO = {
                     "internalType": "uint8",
                     "name": "newValue",
                     "type": "uint8"
+                },
+                {
+                    "internalType": "bool",
+                    "name": "voteEnded",
+                    "type": "bool"
                 }
             ],
             "stateMutability": "view",
