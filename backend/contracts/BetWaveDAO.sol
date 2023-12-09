@@ -33,6 +33,7 @@ contract BetWaveDAO is ReentrancyGuard {
         uint256 voteFor;
         uint256 voteAgainst;
         uint8 newValue;
+        bool voteEnded;
         mapping(address => bool) hasVoted;
     }
 
@@ -53,7 +54,7 @@ contract BetWaveDAO is ReentrancyGuard {
     event newValidator(address);
     event newDAOVote(VoteType, uint);
     event setDAOVote(address, uint, uint);
-    event withdrawValidator(address,uint);
+    event withdrawValidator(address, uint);
 
     modifier onlyValidator() {
         if (validators[msg.sender].userAddress != msg.sender)
@@ -126,10 +127,12 @@ contract BetWaveDAO is ReentrancyGuard {
                 DAOVoteList[_id].voteType,
                 DAOVoteList[_id].newValue
             );
+            DAOVoteList[_id].voteEnded = true;
         } else if (
             ((DAOVoteList[_id].voteAgainst * 100) / validatorNumber) >=
             DAOQuorum
         ) {
+            DAOVoteList[_id].voteEnded = true;
             emit voteRejected(_id);
         }
     }
@@ -145,7 +148,7 @@ contract BetWaveDAO is ReentrancyGuard {
         sendEther(msg.sender, amount);
         validators[msg.sender].userAddress = payable(0);
         validatorNumber--;
-    emit withdrawValidator(msg.sender,validatorNumber);
+        emit withdrawValidator(msg.sender, validatorNumber);
     }
 
     function switchVoteType(VoteType _voteType, uint8 _newValue) internal {

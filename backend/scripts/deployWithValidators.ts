@@ -28,7 +28,7 @@ export async function deployBetWaveDAO() {
     console.log("Contract Address :", betWaveOrganizer.target);
     console.log("Transaction Hash :", hash2);
     console.log("Block number :", blockNumber2);
-    await betWaveOrganizer.connect(user1).deployNewBet('F1 championnship','max','charles');
+   /* await betWaveOrganizer.connect(user1).deployNewBet('F1 championnship','max','charles');
     const SimpleBet1 = await ethers.getContractFactory("SimpleBet");
     const simpleBet1 = await SimpleBet1.attach(await betWaveOrganizer.lastSimpleBetAddress());
 
@@ -39,7 +39,7 @@ export async function deployBetWaveDAO() {
     simpleBet2.connect(user1).setBet(1,{value: ethers.parseEther('2')});
     simpleBet2.connect(user2).setBet(1,{value: ethers.parseEther('2')});
     simpleBet2.connect(user3).setBet(1,{value: ethers.parseEther('2')});
-    simpleBet2.connect(user4).setBet(0,{value: ethers.parseEther('25')});
+    simpleBet2.connect(user4).setBet(0,{value: ethers.parseEther('25')});*/
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -7,19 +7,43 @@ import {
     ModalContent, ModalFooter,
     ModalHeader,
     ModalOverlay, Select, Text,
-    useDisclosure
+    useDisclosure, useToast
 } from "@chakra-ui/react";
 import {useState} from "react";
 import {getWalletClient, prepareWriteContract, readContract, writeContract} from "@wagmi/core";
 import {useAccount} from "wagmi";
 import {betWaveOrganizer, BetWaveOrganizerAbi, BetWaveOrganizerAddress} from "@/constants/BetWaveOrganizer";
 import {askDaoVote} from "@/services/betDAOService";
+import {SetNewBet} from "@/services/SimpleBetServices";
 
 export const AskDAOVote = () => {
 
-    const {isOpen, onOpen, onClose} = useDisclosure()
+    const {isOpen, onOpen, onClose} = useDisclosure();
     const [newValue, setNewValue] = useState(0);
-    const [voteTypeIndex, setNewVoteTypeIndex] = useState(0)
+    const [voteTypeIndex, setNewVoteTypeIndex] = useState(0);
+    const toast = useToast();
+    const [isloading, setIsloading] = useState(false);
+
+    const callAskDaoVote = async (voteTypeIndex, newValue) => {
+        try {
+            setIsloading(true);
+            await askDaoVote(voteTypeIndex, newValue);
+            setIsloading(false);
+            toast({
+                title: "New vote created",
+                status: "success",
+            });
+            //await fetchBetData()
+            onClose();
+        } catch (error) {
+            setIsloading(false);
+            toast({
+                title: error.name,
+                description: error.shortMessage,
+                status: "error",
+            });
+        }
+    }
 
     const voteType = [
         'PlatformFee',
@@ -78,8 +102,8 @@ export const AskDAOVote = () => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button color='blue' mr={3} onClick={() => askDaoVote(voteTypeIndex,newValue)}>
-                            Save
+                        <Button color='blue' mr={3} onClick={() => callAskDaoVote(voteTypeIndex, newValue)} isLoading={isloading}>
+                            Create Vote
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>

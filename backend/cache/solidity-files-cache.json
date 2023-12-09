@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/justmee/dev/cour_alyra/alyra_final_project/backend/contracts/BetWaveDAO.sol": {
-      "lastModificationDate": 1702045417887,
-      "contentHash": "59d0d49445a7ea313589cfdabbf44694",
+      "lastModificationDate": 1702085951310,
+      "contentHash": "4ca4361ae648023c3bd824af35e9dfff",
       "sourceName": "contracts/BetWaveDAO.sol",
       "solcConfig": {
         "version": "0.8.21",
@@ -40,7 +40,7 @@
       ]
     },
     "/home/justmee/dev/cour_alyra/alyra_final_project/backend/contracts/SimpleBet.sol": {
-      "lastModificationDate": 1702044172907,
+      "lastModificationDate": 1702073255710,
       "contentHash": "b923bdd49c6e4d6d8afe58357cca29bf",
       "sourceName": "contracts/SimpleBet.sol",
       "solcConfig": {
@@ -80,7 +80,7 @@
       ]
     },
     "/home/justmee/dev/cour_alyra/alyra_final_project/backend/contracts/BetWaveOrganizer.sol": {
-      "lastModificationDate": 1702053767517,
+      "lastModificationDate": 1702073255710,
       "contentHash": "9fe563c0c2d60544e228f512910a6cac",
       "sourceName": "contracts/BetWaveOrganizer.sol",
       "solcConfig": {

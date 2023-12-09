@@ -2,6 +2,7 @@ import {betWaveOrganizer} from "@/constants/BetWaveOrganizer";
 import {simpleBet} from "@/constants/SimpleBet";
 import {getWalletClient, prepareWriteContract, writeContract} from "@wagmi/core";
 import {parseEther} from "viem";
+import {betWaveDAO} from "@/constants/BetWaveDAO";
 
 export const deploySimpleBet = async (betName,competitor1,competitor2) => {
     try {

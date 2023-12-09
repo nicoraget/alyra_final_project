@@ -186,15 +186,16 @@ contract SimpleBet is ReentrancyGuard{
         winningCoefficientCalculator();
     }
 
-    // on the first time, user have to call to redeem money. that way we dont parse a potentially big array
     function redeemToBettor() public payable
     nonReentrant
     hasAllFeesBeenPaid {
+        require(bettors[msg.sender].bettorAddress == msg.sender,"You don't participate");
         require(hasFeesBeenPaid, "pay platform fee first");
         require(bettors[msg.sender].betId == winnerId, "no gain");
         bettors[msg.sender].bettingReward =
         (bettors[msg.sender].bettingAmout * winningCoefficient) /
         100;
+        bettors[msg.sender].bettingReward = 0;
         sendEther(msg.sender, bettors[msg.sender].bettingReward);
     }
 
