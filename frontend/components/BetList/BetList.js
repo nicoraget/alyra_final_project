@@ -105,6 +105,27 @@ export const BetList = () => {
         }
     }
 
+    const redeem = async(address)=> {
+        try {
+            setIsloading(true);
+           const test = await redeemGain(address);
+            setIsloading(false);
+            toast({
+                title: "gain redeem successfully",
+                status: "success",
+            });
+            await fetchBetData()
+        } catch (error) {
+            console.log(error)
+            setIsloading(false);
+            toast({
+                title: error.name,
+                description: error.shortMessage,
+                status: "error",
+            });
+        }
+    }
+
     const convertAmountToDisplay = (amount1, amount2) => {
         return ethers.formatEther((amount1 + amount2).toString())
     }
@@ -179,7 +200,7 @@ export const BetList = () => {
                                             <Button onClick={() => startValidation(bet.address)} style={buttonStyle}>Start
                                                 validation</Button>}
                                         {(bet.betStatus === 2) &&
-                                            <Button onClick={() => redeemGain(bet.address)}
+                                            <Button onClick={() => redeem(bet.address)}
                                                     style={buttonStyle}>Redeem</Button>}
                                     </Td>
                                 </Tr>

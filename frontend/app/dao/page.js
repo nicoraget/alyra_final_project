@@ -318,4 +318,4 @@ const Validator = () => {
         </div>
     )
 };
-export default validator
+export default Validator

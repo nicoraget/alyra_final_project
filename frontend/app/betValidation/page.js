@@ -12,7 +12,7 @@ import {
     Text,
     Th,
     Thead,
-    Tr
+    Tr, useToast
 } from "@chakra-ui/react";
 import {useEffect, useState} from "react";
 import {
@@ -23,6 +23,7 @@ import {
 } from "@/services/BetOrganizerService";
 import {useAccount, usePublicClient} from "wagmi";
 import {getIsValidator} from "@/services/betDAOService";
+import {redeemGain} from "@/services/SimpleBetServices";
 
 const Bet = () => {
 
@@ -31,6 +32,8 @@ const Bet = () => {
     const [selectedCompetitor, setSelectedCompetitor] = useState(0);
     const [isValidator, setIsValisator] = useState(false);
     const {address} = useAccount();
+    const toast = useToast();
+    const [isloading, setIsloading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,6 +63,26 @@ const Bet = () => {
         }
         fetchData();
     }, [])
+
+    const setVote = async(address)=> {
+        try {
+            setIsloading(true);
+           await setBetVote(selectedCompetitor, address);
+            setIsloading(false);
+            toast({
+                title: "vote successfull",
+                status: "success",
+            });
+        } catch (error) {
+            console.log(error)
+            setIsloading(false);
+            toast({
+                title: error.name,
+                description: error.shortMessage,
+                status: "error",
+            });
+        }
+    }
 
     const buttonStyle = {
         boxShadow: '2px 1px 1px #001233',
@@ -116,8 +139,8 @@ if(isValidator){
                                                     </option>
                                                 </Select>
                                             </Td>
-                                            <Td> <Button onClick={() => setBetVote(selectedCompetitor, bet.address)}
-                                                         style={buttonStyle}>Vote</Button></Td>
+                                            <Td> <Button onClick={() => setVote(bet.address)}
+                                                         style={buttonStyle}  isLoading={isloading}>Vote</Button></Td>
                                         </Tr>
                                     ))}
                                 </Tbody>
@@ -135,4 +158,4 @@ if(isValidator){
     )
 }
 };
-export default bet
+export default Bet

@@ -31,7 +31,7 @@ export const startValidation = async (betAddress) => {
         const {hash} = await writeContract(request)
         console.log(hash)
     } catch (error) {
-        console.log(error)
+        throw error;
     }
 }
 
@@ -49,7 +49,7 @@ export const setBetVote = async (competitorId,betAddress) => {
         const {hash} = await writeContract(request)
         console.log(hash)
     } catch (error) {
-        console.log(error)
+        throw error;
     }
 }
 

@@ -1,5 +1,6 @@
 export const betWaveDAO = {
-    address:'0xC4e1f198569F20bCC0D9Bbdb500F86A09058ef42',
+    ///address:'0xC4e1f198569F20bCC0D9Bbdb500F86A09058ef42',
+    address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     blockNumber: 1,
     abi: [
         {
