@@ -18,7 +18,7 @@ import {addUser} from "@/services/betDAOService";
 import {BetList} from "@/components/BetList/BetList";
 import {deployNewBet} from "@/app/page";
 
-export const AddSimpleBetModal = (isLoading) => {
+export const AddSimpleBetModal = () => {
 
     const {isOpen, onOpen, onClose} = useDisclosure()
     const [competitor1, setCompetitor1] = useState('');
