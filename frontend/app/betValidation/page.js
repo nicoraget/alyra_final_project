@@ -135,4 +135,4 @@ if(isValidator){
     )
 }
 };
-export default bet
+export default Bet

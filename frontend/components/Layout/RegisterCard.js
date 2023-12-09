@@ -2,7 +2,6 @@
 import {Button, Card, CardBody, CardFooter, Heading, Stack, Text, useToast} from "@chakra-ui/react";
 import {useEffect, useState} from "react";
 import {addUser} from "@/services/betDAOService";
-import {useRouter} from "next/router";
 
 export const RegisterCard = () => {
 
