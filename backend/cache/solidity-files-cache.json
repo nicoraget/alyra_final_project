@@ -26,9 +26,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -67,9 +64,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -86,8 +80,8 @@
       ]
     },
     "/home/justmee/dev/cour_alyra/alyra_final_project/backend/contracts/BetWaveOrganizer.sol": {
-      "lastModificationDate": 1702073255710,
-      "contentHash": "9fe563c0c2d60544e228f512910a6cac",
+      "lastModificationDate": 1702152274100,
+      "contentHash": "a712bf63353ee277fbf8e035feac1f9a",
       "sourceName": "contracts/BetWaveOrganizer.sol",
       "solcConfig": {
         "version": "0.8.21",
@@ -110,9 +104,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -152,9 +143,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
