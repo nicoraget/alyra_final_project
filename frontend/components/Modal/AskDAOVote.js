@@ -74,11 +74,11 @@ export const AskDAOVote = () => {
             <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose} size={'lg'}>
                 <ModalOverlay/>
                 <ModalContent height={'24rem'}>
-                    <ModalHeader>Create your bet</ModalHeader>
+                    <ModalHeader>Ask for DAO value change</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody pb={6}>
                         <Heading as={'h2'} size={'m'} mt={'2rem'}>
-                            Choose your champion
+                          Which changes ?
                         </Heading>
                         <Select
                             onChange={(event) =>
@@ -93,7 +93,7 @@ export const AskDAOVote = () => {
                         </Select>
 
                         <Heading as={'h2'} size={'m'} mt={'2rem'}>
-                            Choose your bet amount
+                            Choose the new value
                         </Heading>
                         <Input type={'number'} placeholder={'deposit amount'} value={newValue}
                                onChange={(e) => {

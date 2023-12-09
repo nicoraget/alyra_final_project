@@ -29,7 +29,6 @@ export const BetList = () => {
     const [isloading, setIsloading] = useState(false);
 
     const fetchBetData = async () => {
-        console.log("--")
         const newBetList = await getNewBet(publicClient);
         var betMap = new Map();
         await Promise.all(newBetList.map(async (bet) => {
@@ -117,8 +116,12 @@ export const BetList = () => {
         background: '#001233'
     }
 
+    const cardStyle = {
+        boxShadow: '2px 1px 1px #001233',
+    }
+
     return (
-        <Card>
+        <Card style={cardStyle}>
             <CardBody>
                 <TableContainer width={"auto"}>
                     <Table variant="simple" colorScheme='#FF595A'>
@@ -134,7 +137,7 @@ export const BetList = () => {
                                 <Th isNumeric>Participants</Th>
                                 <Th>Your amount</Th>
                                 <Th>Your choice</Th>
-                                <Th>Bet</Th>
+                                <Th></Th>
                                 <Th></Th>
                             </Tr>
                         </Thead>

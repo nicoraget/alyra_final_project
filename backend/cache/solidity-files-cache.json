@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/justmee/dev/cour_alyra/alyra_final_project/backend/contracts/BetWaveDAO.sol": {
-      "lastModificationDate": 1702085951310,
-      "contentHash": "4ca4361ae648023c3bd824af35e9dfff",
+      "lastModificationDate": 1702128720630,
+      "contentHash": "c16fedb00c8bf8b14ee608a3e009d523",
       "sourceName": "contracts/BetWaveDAO.sol",
       "solcConfig": {
         "version": "0.8.21",
@@ -26,6 +26,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -40,8 +43,8 @@
       ]
     },
     "/home/justmee/dev/cour_alyra/alyra_final_project/backend/contracts/SimpleBet.sol": {
-      "lastModificationDate": 1702073255710,
-      "contentHash": "b923bdd49c6e4d6d8afe58357cca29bf",
+      "lastModificationDate": 1702150003970,
+      "contentHash": "1be90b0e0d3dab84561570297f11db59",
       "sourceName": "contracts/SimpleBet.sol",
       "solcConfig": {
         "version": "0.8.21",
@@ -64,6 +67,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -104,6 +110,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -143,6 +152,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },

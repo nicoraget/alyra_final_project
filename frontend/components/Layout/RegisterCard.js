@@ -1,7 +1,8 @@
 'use client'
 import {Button, Card, CardBody, CardFooter, Heading, Stack, Text, useToast} from "@chakra-ui/react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {addUser} from "@/services/betDAOService";
+import {useRouter} from "next/router";
 
 export const RegisterCard = () => {
 
@@ -24,6 +25,7 @@ export const RegisterCard = () => {
                 title: "You are registered ",
                 status: "success",
             });
+            location.reload();
         } catch (error) {
             setIsloading(false);
             toast({

@@ -4,7 +4,15 @@ import {BetList} from "@/components/BetList/BetList";
 
 export default function Home() {
 
-    return <div>
+    const wrapperStyle = {
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+
+    }
+
+    return <div style={wrapperStyle}>
         <AddSimpleBetModal/>
         <BetList/>
     </div>

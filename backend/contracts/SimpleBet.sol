@@ -107,18 +107,6 @@ contract SimpleBet is ReentrancyGuard{
         _;
     }
 
-    modifier hasEventStarted() {
-        if (block.timestamp >= beginEventTimestamp)
-            revert eventAlreadyStarted();
-        _;
-    }
-
-    modifier hasEventEnded() {
-        if (block.timestamp >= endEventTimestamp) revert eventNotEnded();
-        _;
-    }
-
-
     function setBet(uint256 _betId)
     external
     payable
@@ -195,8 +183,9 @@ contract SimpleBet is ReentrancyGuard{
         bettors[msg.sender].bettingReward =
         (bettors[msg.sender].bettingAmout * winningCoefficient) /
         100;
+        uint amountToSend = bettors[msg.sender].bettingReward;
         bettors[msg.sender].bettingReward = 0;
-        sendEther(msg.sender, bettors[msg.sender].bettingReward);
+        sendEther(msg.sender, amountToSend);
     }
 
     function winningCoefficientCalculator() internal hasAllFeesBeenPaid {

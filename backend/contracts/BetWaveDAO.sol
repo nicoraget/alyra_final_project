@@ -9,11 +9,11 @@ pragma solidity ^0.8.21;
 
 contract BetWaveDAO is ReentrancyGuard {
 
-    uint8 public platformFees = 150;
-    uint8 public creatorFees = 50;
+    uint8 public platformFees = 100;
+    uint8 public creatorFees = 100;
     uint8 public betQuorum = 75;
     uint8 public DAOQuorum = 75;
-    uint8 public validatorFees = 10;
+    uint8 public validatorFees = 100; // 1% fees
     uint16 public validatorNumberRequired = 4;
     uint16 public validatorNumber;
     uint64 public userNumber = 1;

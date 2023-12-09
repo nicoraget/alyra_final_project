@@ -40,6 +40,20 @@ export const getDAOVoteNumber = async () => {
         });
 }
 
+export const getIsValidator = async (address) => {
+    const validator = await readContract({
+        address: betWaveDAO.address,
+        abi: betWaveDAO.abi,
+        functionName: "validators",
+        args:[address],
+    });
+    return{
+        userAddress: validator[0],
+        isBlacklisted:validator[1],
+        strike: validator[2],
+    }
+}
+
 export const getDAOVoteList = async (voteNumber) => {
     const daoVote = [];
     for(let i=0;i< voteNumber; i++) {
@@ -113,13 +127,15 @@ export const setDaoVote = async (id,option) => {
 }
 
 export const askDaoVote = async (voteType, newValue) => {
+    const newValueToPercentage = Math.round(100/newValue);
+    console.log(newValueToPercentage)
     try {
         const walletClient = await getWalletClient();
         const {request} = await prepareWriteContract({
             address: betWaveDAO.address,
             abi: betWaveDAO.abi,
             account: walletClient?.account,
-            args: [voteType, newValue],
+            args: [voteType, newValueToPercentage],
             functionName: "askDAOVote",
         });
         const {hash} = await writeContract(request)
@@ -129,7 +145,7 @@ export const askDaoVote = async (voteType, newValue) => {
     }
 }
 
-export const withdrawFormValidator = async () => {
+export const withdrawFromValidator = async () => {
     try {
         const walletClient = await getWalletClient();
         const {request} = await prepareWriteContract({

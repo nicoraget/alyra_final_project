@@ -1,8 +1,8 @@
 'use client'
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
-import {isUserExist} from "@/services/betDAOService";
-import {useEffect, useState} from "react";
+import {getIsValidator, isUserExist} from "@/services/betDAOService";
+import {useContext, useEffect, useState} from "react";
 import {useAccount} from "wagmi";
 import {Text} from "@chakra-ui/react";
 import {getWalletClient} from "@wagmi/core";
@@ -12,22 +12,23 @@ const Layout = ({children}) => {
     const {address, isConnected} = useAccount();
     const [userExist, setUserExist] = useState(false);
 
-    const getUserToId = async () => {
+    const getIfUserExist = async () => {
         const walletClient = await getWalletClient();
         const fetchUserExist = await isUserExist(walletClient)
-        if (BigInt(fetchUserExist) === 1n) {
+        if (Number(fetchUserExist) >= 1) {
             setUserExist(true);
         } else if (BigInt(fetchUserExist) === 0n) {
             setUserExist(false)
         }
     }
 
+
     useEffect(() => {
-        getUserToId()
+        getIfUserExist();
     })
 
     useEffect(() => {
-        getUserToId();
+        getIfUserExist();
     }, [address]);
 
     const wrapper = {

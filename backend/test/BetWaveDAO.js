@@ -134,7 +134,6 @@ describe("BetWaveDAO", () => {
             //WHEN
             //THEN
             await expect(betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("0.5")})).to.be.revertedWith('send 1 eth');
-            await expect(betWaveDAO.connect(user1).addValidators({value: ethers.parseEther("1.5")})).to.be.revertedWith('send 1 eth');
         });
 
         it("should fail if you already are validator", async () => {

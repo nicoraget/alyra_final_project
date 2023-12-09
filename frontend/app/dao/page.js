@@ -17,11 +17,12 @@ import {
     addValidator,
     getDAOControlValue,
     getDAOVoteList,
-    getDAOVoteNumber, setDaoVote,
-    withdrawFormValidator
+    getDAOVoteNumber, getIsValidator, setDaoVote,
+    withdrawFormValidator, withdrawFromValidator
 } from "@/services/betDAOService";
 import {AskDAOVote} from "@/components/Modal/AskDAOVote";
 import {SetNewBet} from "@/services/SimpleBetServices";
+import {useAccount} from "wagmi";
 
 const validator = () => {
 
@@ -30,6 +31,8 @@ const validator = () => {
     const [selectedDaoVoteOption, setSelectedDaoVoteOption] = useState(1);
     const toast = useToast();
     const [isloading, setIsloading] = useState(false);
+    const [isValidator, setIsValisator] = useState(false);
+    const {address} = useAccount();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,6 +42,14 @@ const validator = () => {
     }, [])
 
     const fetchDaoVoteList = async () => {
+
+        const validator = await getIsValidator(address);
+        console.log(validator)
+        if (validator.userAddress !== "0x0000000000000000000000000000000000000000"
+        ) {
+            setIsValisator(true);
+        }
+
         const daoControlValueFromContract = await getDAOControlValue();
         const daoVoteNumber = await getDAOVoteNumber();
         setDaoVoteList(await getDAOVoteList(daoVoteNumber));
@@ -74,8 +85,49 @@ const validator = () => {
 
     }
 
+    const joinValidator = async() => {
+        try {
+            setIsloading(true);
+            await addValidator()
+            setIsloading(false);
+            toast({
+                title: "Voted",
+                status: "success",
+            });
+            await fetchDaoVoteList()
+
+        } catch (error) {
+            setIsloading(false);
+            toast({
+                title: error.name,
+                description: error.shortMessage,
+                status: "error",
+            });
+        }
+    }
+
+    const leaveValidator = async() => {
+        try {
+            setIsloading(true);
+            await withdrawFromValidator()
+            setIsloading(false);
+            toast({
+                title: "Voted",
+                status: "success",
+            });
+            await fetchDaoVoteList()
+
+        } catch (error) {
+            setIsloading(false);
+            toast({
+                title: error.name,
+                description: error.shortMessage,
+                status: "error",
+            });
+        }
+    }
+
     const switchVoteTypeToDisplay = (voteType) => {
-        console.log(daoVoteList)
         switch (voteType) {
             case 0: {
                 return 'PlatformFee';
@@ -96,6 +148,10 @@ const validator = () => {
                 return 'ValidatorFees';
             }
         }
+    }
+
+    const percentageConverterToDisplay = (value) => {
+        return Math.round((1 / value) * 100);
     }
 
     const buttonDiv = {
@@ -161,7 +217,7 @@ const validator = () => {
                                 <Box>
                                     <Heading size='xs' textTransform='uppercase'>
                                         Platform fees : <Badge
-                                        style={daoValueStyle}>{daoControlValue.platformFees} %</Badge>
+                                        style={daoValueStyle}>{percentageConverterToDisplay(daoControlValue.platformFees)} %</Badge>
                                     </Heading>
                                     <Text pt='2' fontSize='sm'>
                                         Percentage kept by the platform for each bet.
@@ -170,7 +226,7 @@ const validator = () => {
                                 <Box>
                                     <Heading size='xs' textTransform='uppercase'>
                                         Creator fees : <Badge
-                                        style={daoValueStyle}>{daoControlValue.creatorFees} %</Badge>
+                                        style={daoValueStyle}>{percentageConverterToDisplay(daoControlValue.creatorFees)} %</Badge>
                                     </Heading>
                                     <Text pt='2' fontSize='sm'>
                                         Percentage give to the creator of the bet after the validation.
@@ -179,7 +235,7 @@ const validator = () => {
                                 <Box>
                                     <Heading size='xs' textTransform='uppercase'>
                                         Validator fees : <Badge
-                                        style={daoValueStyle}>{daoControlValue.validatorFees} %</Badge>
+                                        style={daoValueStyle}>{percentageConverterToDisplay(daoControlValue.validatorFees)} %</Badge>
                                     </Heading>
                                     <Text pt='2' fontSize='sm'>
                                         Percentage send to bet validator.
@@ -228,7 +284,7 @@ const validator = () => {
                                                 <Td>{switchVoteTypeToDisplay(daoVote.voteType)}</Td>
                                                 <Td>{daoVote.voteFor}</Td>
                                                 <Td>{daoVote.voteAgainst}</Td>
-                                                <Td>{daoVote.newValue}</Td>
+                                                <Td>{percentageConverterToDisplay(daoVote.newValue)}%</Td>
                                                 <Td>
                                                     <Select onChange={(event) =>
                                                         setSelectedDaoVoteOption(event.target.value)
@@ -254,9 +310,9 @@ const validator = () => {
                     </Card>
                 </div>
                 <div style={buttonDiv}>
-                    <Button onClick={addValidator} style={buttonStyle}>Join</Button>
-                    <AskDAOVote/>
-                    <Button onClick={withdrawFormValidator} style={buttonStyle}>Withdraw</Button>
+                    {!isValidator && <Button onClick={joinValidator} style={buttonStyle} isLoading={isloading}>Join</Button>}
+                    {isValidator && <AskDAOVote/>}
+                    {isValidator && <Button onClick={leaveValidator} style={buttonStyle} isLoading={isloading}>Withdraw</Button>}
                 </div>
             </div>
         </div>

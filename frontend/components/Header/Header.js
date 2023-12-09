@@ -2,6 +2,9 @@
 import Link from "next/link";
 import {ConnectButton} from '@rainbow-me/rainbowkit';
 import {Button, ButtonGroup, Flex} from "@chakra-ui/react";
+import {useEffect, useState} from "react";
+import {getIsValidator} from "@/services/betDAOService";
+import {useAccount} from "wagmi";
 
 const Header = () => {
 
