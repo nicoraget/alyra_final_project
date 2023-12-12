@@ -2,8 +2,9 @@
 ![betWave](./betwaveLogo.PNG)
 
 ## Vidéo de présentation
-[Betwave présentation partie 1](https://www.loom.com/share/2abf62f9b7794df68f1812a72ab0b531)
-[Betwave présentation partie 2](https://www.loom.com/share/e31b98cbc43a419e914190ac4934f0b5)
+Lien partie 1: [Betwave présentation partie 1](https://www.loom.com/share/2abf62f9b7794df68f1812a72ab0b531)
+
+Lien partie 2: [Betwave présentation partie 2](https://www.loom.com/share/e31b98cbc43a419e914190ac4934f0b5)
 
 ## Déploiement
 Lien Déploiement: [betWave](https://alyra-final-project-five.vercel.app/)  
